@@ -57,7 +57,7 @@ class DataSync extends ChangeNotifier {
         delivered: Value(delivered),
         canceled: Value(canceled),
         import: Value(import),
-        uuid: Value(Uuid().v1()),
+        uuid: Value(const Uuid().v1()),
       ),
     );
     notifyListeners();

@@ -12,20 +12,25 @@ class ListViewTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder<List<Item>>(
       future: Provider.of<DataSync>(context).getAllItems,
-      initialData: [],
+      initialData: const [],
       builder: (context, snapshot) {
-        if (!snapshot.hasData) {
+        if (snapshot.hasData) {
+          var snapshotData = snapshot.data;
+          if (snapshotData != null) {
+            return ListView.builder(
+              itemCount: snapshotData.length,
+              itemBuilder: (BuildContext context, int index) {
+                Item item = snapshotData[index];
+                final data = ItemData(item);
+                return ItemListCard(data);
+              },
+            );
+          } else {
+            return const CircularProgressIndicator();
+          }
+        } else {
           return const Center(
             child: CircularProgressIndicator(),
-          );
-        } else {
-          return ListView.builder(
-            itemCount: snapshot.data?.length,
-            itemBuilder: (BuildContext context, int index) {
-              Item item = snapshot.data![index];
-              final data = ItemData(item);
-              return ItemListCard(data);
-            },
           );
         }
       },

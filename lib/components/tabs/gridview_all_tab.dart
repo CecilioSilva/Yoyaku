@@ -19,20 +19,27 @@ class GridViewTab extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else {
-          return GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 8,
-              crossAxisSpacing: 8,
-              childAspectRatio: 0.75,
-            ),
-            itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) {
-              Item item = snapshot.data![index];
-              ItemData data = ItemData(item);
-              return ItemGridCard(data);
-            },
-          );
+          var snapshotData = snapshot.data;
+          if (snapshotData != null) {
+            return GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 8,
+                childAspectRatio: 0.75,
+              ),
+              itemCount: snapshotData.length,
+              itemBuilder: (context, index) {
+                Item item = snapshotData[index];
+                ItemData data = ItemData(item);
+                return ItemGridCard(data);
+              },
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
         }
       },
     );

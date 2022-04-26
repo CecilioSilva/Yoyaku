@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:xml/xml.dart';
 
 class ItemData {
-  static Map? exchangeRates;
+  late Map exchangeRates;
   static double importPercentage = 4.7;
   static double handlingFee = 12;
 
@@ -113,7 +113,7 @@ class ItemData {
   }
 
   double getEuro(double price, String currency) {
-    return price / exchangeRates![currency];
+    return price / exchangeRates[currency];
   }
 
   String getTotalPrice(
