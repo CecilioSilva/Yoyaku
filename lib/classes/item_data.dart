@@ -28,6 +28,11 @@ class ItemData {
   late String totalPrice;
   late Map exchangeRates;
 
+  late double totalRaw;
+  late double shippingRaw;
+  late double priceRaw;
+  late double vatRaw;
+
   ItemData(Item data, rates) {
     exchangeRates = rates;
     uuid = data.uuid;
@@ -56,6 +61,25 @@ class ItemData {
       data.price,
       data.shipping,
       data.currency,
+      data.import,
+    );
+    totalRaw = getRawTotal(
+      data.price,
+      data.shipping,
+      data.currency,
+      data.import,
+    );
+    shippingRaw = getEuro(
+      data.shipping,
+      data.currency,
+    );
+    priceRaw = getEuro(
+      data.price,
+      data.currency,
+    );
+    vatRaw = getVat(
+      priceRaw,
+      shippingRaw,
       data.import,
     );
   }
@@ -107,6 +131,44 @@ class ItemData {
       double importCost = totalPriceInEuro / 100 * importPercentage;
       double total = totalPriceInEuro + vat + importCost + handlingFee;
       return '≈ €${total.toStringAsFixed(2)}';
+    }
+  }
+
+  double getRawTotal(
+    double price,
+    double shipping,
+    String currency,
+    bool import,
+  ) {
+    var priceInEuro = getEuro(price, currency);
+    var shippingInEuro = getEuro(shipping, currency);
+    var totalPriceInEuro = priceInEuro + shippingInEuro;
+
+    if (!import) {
+      return totalPriceInEuro;
+    }
+
+    double vat = totalPriceInEuro / 100 * 21;
+    if (priceInEuro < 150) {
+      double total = totalPriceInEuro + vat + handlingFee;
+      return total;
+    } else {
+      double importCost = totalPriceInEuro / 100 * importPercentage;
+      double total = totalPriceInEuro + vat + importCost + handlingFee;
+      return total;
+    }
+  }
+
+  double getVat(double price, double shipping, bool import) {
+    if (!import) return 0;
+    var totalPriceInEuro = price + shipping;
+
+    double vat = totalPriceInEuro / 100 * 21;
+    if (price < 150) {
+      return vat + handlingFee;
+    } else {
+      double importCost = totalPriceInEuro / 100 * importPercentage;
+      return vat + importCost + handlingFee;
     }
   }
 }

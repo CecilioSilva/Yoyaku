@@ -1,3 +1,5 @@
+import 'package:yoyaku/classes/item_data.dart';
+import 'package:yoyaku/classes/total_data.dart';
 import 'package:yoyaku/models/database_model.dart';
 import 'package:yoyaku/services/check_connection.dart';
 import 'package:drift/drift.dart';
@@ -78,6 +80,81 @@ class DataSync extends ChangeNotifier {
     }
 
     return result;
+  }
+
+  Future<TotalData> getTotalData(dynamic rates) async {
+    List<Item> allItems = await _localDatabase.allItems;
+
+    double totalSpend = 0;
+    double totalVat = 0;
+    double totalShipping = 0;
+    double totalCollection = 0;
+    double totalPrice = 0;
+    double totalDebt = 0;
+    int totalOrders = 0;
+    int mangaAmount = 0;
+    int figureAmount = 0;
+    int gameAmount = 0;
+    int otherAmount = 0;
+    int canceledAmount = 0;
+    int importAmount = 0;
+
+    for (Item item in allItems) {
+      ItemData itemData = ItemData(item, rates);
+
+      if (!itemData.canceled) {
+        totalSpend += itemData.totalRaw;
+        totalVat += itemData.vatRaw;
+        totalShipping += itemData.shippingRaw;
+        totalPrice += itemData.priceRaw;
+
+        if (itemData.delivered) {
+          totalCollection += itemData.totalRaw;
+        }
+        totalOrders += 1;
+
+        switch (itemData.type) {
+          case 'Manga':
+            mangaAmount += 1;
+            break;
+          case 'Figure':
+            figureAmount += 1;
+            break;
+          case 'Game':
+            gameAmount += 1;
+            break;
+          default:
+            otherAmount += 1;
+            break;
+        }
+
+        if (itemData.import) {
+          importAmount += 1;
+        }
+
+        if (!itemData.paid) {
+          totalDebt += itemData.totalRaw;
+        }
+      } else {
+        canceledAmount += 1;
+      }
+    }
+
+    return TotalData(
+      totalSpend: totalSpend,
+      totalVat: totalVat,
+      totalShipping: totalShipping,
+      totalCollection: totalCollection,
+      totalOrders: totalOrders,
+      mangaAmount: mangaAmount,
+      figureAmount: figureAmount,
+      gameAmount: gameAmount,
+      otherAmount: otherAmount,
+      canceledAmount: canceledAmount,
+      importAmount: importAmount,
+      totalDebt: totalDebt,
+      totalPrice: totalPrice,
+    );
   }
 
   void updateItem(Item entry) {

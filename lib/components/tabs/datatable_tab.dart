@@ -58,7 +58,6 @@ class _DatatableTabState extends State<DatatableTab> {
                   scrollDirection: Axis.horizontal,
                   child: DataTable(
                     columns: const [
-                      DataColumn(label: Text('#')),
                       DataColumn(label: Text('Image')),
                       DataColumn(label: Text('Title')),
                       DataColumn(label: Text('Type')),
@@ -104,20 +103,8 @@ class _DatatableTabState extends State<DatatableTab> {
       (e) {
         final rates = context.watch<Map?>();
         ItemData data = ItemData(e, rates);
-        rowCount += 1;
         return DataRow(
-          selected: rowCount % 2 == 0 ? true : false,
           cells: [
-            DataCell(
-              Text(
-                rowCount.toString(),
-                style: const TextStyle(
-                  color: Colors.orange,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                ),
-              ),
-            ),
             DataCell(Image.memory(data.image, width: 50, height: 50)),
             DataCell(
               Text(
