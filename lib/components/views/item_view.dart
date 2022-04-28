@@ -38,7 +38,7 @@ class _ItemViewState extends State<ItemView> {
   ViewType type = ViewType.list;
 
   Future<List<Item>> getItems() async {
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 200));
     List<Item> items = await widget.itemFuture;
     return isReversed ? items.reversed.toList() : items;
   }
