@@ -2,6 +2,7 @@ import 'package:amiamu/models/database_model.dart';
 import 'package:amiamu/services/check_connection.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:uuid/uuid.dart';
 
@@ -37,7 +38,7 @@ class DataSync extends ChangeNotifier {
   }
 
   Future<List<Item>> getUpcommingItems() async {
-    List<Item> allItems = await _localDatabase.allItems;
+    List<Item> allItems = await _localDatabase.allUnCanceledItems;
     return allItems
         .where(
           (element) =>
@@ -48,7 +49,7 @@ class DataSync extends ChangeNotifier {
   }
 
   Future<List<Item>> getUpcommingPayments() async {
-    List<Item> allItems = await _localDatabase.allItems;
+    List<Item> allItems = await _localDatabase.allUnCanceledItems;
     return allItems
         .where(
           (element) =>
@@ -56,6 +57,24 @@ class DataSync extends ChangeNotifier {
               !element.paid,
         )
         .toList();
+  }
+
+  Future<Map<String, List<Item>>> getMontlyItems() async {
+    final DateFormat formatter = DateFormat.yMMMM();
+    List<Item> allItems = await _localDatabase.allCanceledItems;
+    Map<String, List<Item>> result = {};
+
+    for (Item item in allItems) {
+      final String itemMonth = formatter.format(item.releaseDate);
+
+      if (result.containsKey(itemMonth)) {
+        result[itemMonth]!.add(item);
+      } else {
+        result[itemMonth] = [item];
+      }
+    }
+
+    return result;
   }
 
   void addItem({

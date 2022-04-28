@@ -1,6 +1,5 @@
 import 'package:amiamu/classes/item_data.dart';
 import 'package:amiamu/components/cards/item_gallerycard.dart';
-import 'package:amiamu/components/cards/item_gridcard.dart';
 import 'package:amiamu/components/extras/custom_error.dart';
 import 'package:amiamu/components/extras/loading.dart';
 import 'package:amiamu/components/extras/non_found.dart';
