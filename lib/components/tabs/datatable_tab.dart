@@ -1,6 +1,6 @@
 import 'package:amiamu/classes/data_sync.dart';
 import 'package:amiamu/classes/item_data.dart';
-import 'package:amiamu/components/type_tag.dart';
+import 'package:amiamu/components/extras/type_tag.dart';
 import 'package:amiamu/models/database_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

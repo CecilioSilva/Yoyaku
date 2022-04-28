@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-class Waiting extends StatelessWidget {
+class CustomError extends StatelessWidget {
   final void Function()? onPressed;
-  const Waiting({Key? key, this.onPressed}) : super(key: key);
+  final Object? error;
+  const CustomError({Key? key, this.onPressed, this.error}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,11 +12,17 @@ class Waiting extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Image.asset(
-          'assets/waiting.png',
+          'assets/error.png',
           width: size.width * 0.1,
           height: size.width * 0.1,
         ),
-        const Text('No items found'),
+        Text(
+          'Error loading items',
+          style: TextStyle(
+            color: Colors.red,
+            fontSize: size.width * 0.04,
+          ),
+        ),
       ],
     );
   }

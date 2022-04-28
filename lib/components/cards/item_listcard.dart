@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:amiamu/classes/item_data.dart';
-import 'package:amiamu/components/type_tag.dart';
+import 'package:amiamu/components/extras/type_tag.dart';
 import 'package:flutter/material.dart';
 
 class ItemListCard extends StatelessWidget {

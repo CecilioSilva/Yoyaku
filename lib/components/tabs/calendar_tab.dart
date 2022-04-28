@@ -1,7 +1,7 @@
 import 'package:amiamu/classes/data_sync.dart';
 import 'package:amiamu/classes/item_data.dart';
-import 'package:amiamu/components/item_listcard.dart';
-import 'package:amiamu/components/waiting.dart';
+import 'package:amiamu/components/cards/item_listcard.dart';
+import 'package:amiamu/components/extras/non_found.dart';
 import 'package:amiamu/models/database_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -96,7 +96,7 @@ class _CalendarTabState extends State<CalendarTab> {
                 );
               } else {
                 var value = snapshot.data;
-                if (value!.isEmpty) return const Waiting();
+                if (value!.isEmpty) return const NonFound();
 
                 return ListView.builder(
                   itemCount: value.length,

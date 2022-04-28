@@ -37,8 +37,19 @@ class DataSync extends ChangeNotifier {
     return allItems
         .where(
           (element) =>
-              DateTime.now().difference(element.releaseDate).inDays < 30 &&
+              DateTime.now().difference(element.releaseDate).inDays < 31 &&
               !element.delivered,
+        )
+        .toList();
+  }
+
+  Future<List<Item>> getUpcommingPayments() async {
+    List<Item> allItems = await _localDatabase.allItems;
+    return allItems
+        .where(
+          (element) =>
+              DateTime.now().difference(element.releaseDate).inDays < 31 &&
+              !element.paid,
         )
         .toList();
   }

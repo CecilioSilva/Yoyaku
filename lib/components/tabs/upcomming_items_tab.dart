@@ -1,18 +1,18 @@
 import 'package:amiamu/classes/data_sync.dart';
 import 'package:amiamu/classes/item_data.dart';
-import 'package:amiamu/components/item_gridcard.dart';
-import 'package:amiamu/components/waiting.dart';
+import 'package:amiamu/components/cards/item_gridcard.dart';
+import 'package:amiamu/components/extras/non_found.dart';
 import 'package:amiamu/models/database_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class GridViewTab extends StatelessWidget {
-  const GridViewTab({Key? key}) : super(key: key);
+class UpcommingTab extends StatelessWidget {
+  const UpcommingTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Item>>(
-      future: Provider.of<DataSync>(context).getAllItems,
+      future: Provider.of<DataSync>(context).getUpcommingItems(),
       initialData: [],
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -22,7 +22,7 @@ class GridViewTab extends StatelessWidget {
         } else {
           var snapshotData = snapshot.data;
           if (snapshotData != null) {
-            if (snapshotData.isEmpty) return const Waiting();
+            if (snapshotData.isEmpty) return const NonFound();
             return GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
