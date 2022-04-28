@@ -1,14 +1,9 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:amiamu/models/database_model.dart';
 import 'package:amiamu/services/get_currency.dart';
 import 'package:drift/drift.dart';
 import 'package:intl/intl.dart';
-import 'package:xml/xml.dart';
 
 class ItemData {
-  late Map exchangeRates;
   static double importPercentage = 4.7;
   static double handlingFee = 12;
 
@@ -29,10 +24,10 @@ class ItemData {
   late String daysSinceBought;
   late String daysUntilRelease;
   late String totalPrice;
+  late Map exchangeRates;
 
-  ItemData(Item data) {
-    getExchange();
-
+  ItemData(Item data, rates) {
+    exchangeRates = rates;
     uuid = data.uuid;
     type = ['Figure', 'Manga', 'Game', 'Other'][data.type];
     title = data.title;
@@ -82,38 +77,12 @@ class ItemData {
     return days.toString();
   }
 
-  void getExchange() async {
-    if (exchangeRates == null) {
-      final HttpClient httpClient = HttpClient();
-      const uri =
-          r'https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml';
-      final request = await httpClient.getUrl(Uri.parse(uri));
-      final response = await request.close();
-      final stream = response.transform(utf8.decoder);
-      final contents = await stream.join();
-      final document = XmlDocument.parse(contents);
-
-      Map rates = {};
-      document.findAllElements('Cube').forEach(
-        (element) {
-          if (element.children.isNotEmpty) {
-            element.children.forEach((p0) {
-              if (p0.getAttribute('currency') != null) {
-                rates[p0.getAttribute('currency')] = double.parse(
-                  p0.getAttribute('rate') ?? '1',
-                );
-              }
-            });
-          }
-        },
-      );
-
-      exchangeRates = rates;
-    }
-  }
-
   double getEuro(double price, String currency) {
-    return price / exchangeRates[currency];
+    try {
+      return price / exchangeRates[currency];
+    } catch (e) {}
+
+    return price;
   }
 
   String getTotalPrice(

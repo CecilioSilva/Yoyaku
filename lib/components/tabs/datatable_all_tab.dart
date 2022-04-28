@@ -43,7 +43,8 @@ class DatatableTab extends StatelessWidget {
               ],
               rows: snapshot.data!.map(
                 (e) {
-                  ItemData data = ItemData(e);
+                  final rates = context.watch<Map?>();
+                  ItemData data = ItemData(e, rates);
                   return DataRow(
                     cells: [
                       DataCell(Image.memory(data.image, width: 50, height: 50)),

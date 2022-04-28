@@ -41,7 +41,7 @@ class ItemGridCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                image(data.image, size),
+                CoverImage(size: size, data: data),
                 Text(
                   data.title,
                   style: TextStyle(
@@ -75,19 +75,34 @@ class ItemGridCard extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget image(Uint8List image, Size size) {
+class CoverImage extends StatelessWidget {
+  const CoverImage({
+    Key? key,
+    required this.size,
+    required this.data,
+  }) : super(key: key);
+
+  final Size size;
+  final ItemData data;
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(0),
-      child: Container(
-        width: size.width * 0.45,
-        height: size.width * 0.3,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            alignment: Alignment.topCenter,
-            image: MemoryImage(data.image),
+      child: Hero(
+        tag: data.title,
+        child: Container(
+          width: size.width * 0.45,
+          height: size.width * 0.3,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
+              image: MemoryImage(data.image),
+            ),
           ),
         ),
       ),

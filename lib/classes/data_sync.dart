@@ -7,6 +7,7 @@ import 'package:uuid/uuid.dart';
 
 class DataSync extends ChangeNotifier {
   static final AmiAmuDatabase _localDatabase = AmiAmuDatabase();
+  static Map? exchangeRates;
   List<Item> allItems = [];
 
   DataSync() {
@@ -22,9 +23,24 @@ class DataSync extends ChangeNotifier {
   }
 
   Future<List<Item>> get getAllItems async => await _localDatabase.allItems;
+  Future<List<Item>> get getCanceledItems async =>
+      await _localDatabase.allCanceledItems;
+
+  Map? get getExchangeRate => exchangeRates;
 
   Stream<List<Item>> dataStream() {
     return _localDatabase.watchEntries();
+  }
+
+  Future<List<Item>> getUpcommingItems() async {
+    List<Item> allItems = await _localDatabase.allItems;
+    return allItems
+        .where(
+          (element) =>
+              DateTime.now().difference(element.releaseDate).inDays < 30 &&
+              !element.delivered,
+        )
+        .toList();
   }
 
   void addItem({

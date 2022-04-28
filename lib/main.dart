@@ -1,19 +1,24 @@
 import 'package:amiamu/classes/data_sync.dart';
 import 'package:amiamu/pages/home_page.dart';
+import 'package:amiamu/services/get_exchange_rate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
   );
 
   runApp(
-    ChangeNotifierProvider<DataSync>(
-      create: (context) => DataSync(),
-      child: const MyApp(),
+    FutureProvider<Map?>(
+      initialData: initalRates,
+      create: (context) => getExchange(),
+      child: ChangeNotifierProvider<DataSync>(
+        create: (context) => DataSync(),
+        child: const MyApp(),
+      ),
     ),
   );
 }

@@ -6,13 +6,13 @@ import 'package:amiamu/models/database_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class GridViewTab extends StatelessWidget {
-  const GridViewTab({Key? key}) : super(key: key);
+class GridViewUpcommingTab extends StatelessWidget {
+  const GridViewUpcommingTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Item>>(
-      future: Provider.of<DataSync>(context).getAllItems,
+      future: Provider.of<DataSync>(context).getUpcommingItems(),
       initialData: [],
       builder: (context, snapshot) {
         if (!snapshot.hasData) {

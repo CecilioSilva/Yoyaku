@@ -35,10 +35,11 @@ class ItemListCard extends StatelessWidget {
               15,
             ),
           ),
-          child: IntrinsicWidth(
+          child: SizedBox(
+            width: size.width,
             child: Row(
               children: [
-                image(data.image, size),
+                CoverImage(size: size, data: data),
                 Expanded(
                   child: Row(
                     children: [
@@ -64,12 +65,38 @@ class ItemListCard extends StatelessWidget {
                               fontSize: size.width * 0.04,
                             ),
                           ),
-                          Row(
-                            children: [
-                              checkbox('Paid', data.paid, size),
-                              checkbox('Canceled', data.canceled, size),
-                              checkbox('Import', data.import, size),
-                            ],
+                          SizedBox(
+                            width: size.width * 0.6,
+                            child: Row(
+                              children: [
+                                Visibility(
+                                  visible: !data.canceled,
+                                  child: checkbox(
+                                    Icons.paid,
+                                    data.paid,
+                                    size,
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: data.canceled,
+                                  child: checkbox(
+                                    Icons.cancel_outlined,
+                                    data.canceled,
+                                    size,
+                                  ),
+                                ),
+                                checkbox(
+                                  Icons.directions_boat,
+                                  data.import,
+                                  size,
+                                ),
+                                checkbox(
+                                  Icons.local_shipping,
+                                  data.delivered,
+                                  size,
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -84,12 +111,12 @@ class ItemListCard extends StatelessWidget {
     );
   }
 
-  Widget checkbox(String title, bool value, Size size) {
+  Widget checkbox(IconData icon, bool value, Size size) {
     return Row(
       children: [
-        Text(
-          '$title: ',
-          style: TextStyle(fontSize: size.width * 0.030),
+        Icon(
+          icon,
+          size: 20,
         ),
         Checkbox(
           value: value,
@@ -100,8 +127,20 @@ class ItemListCard extends StatelessWidget {
       ],
     );
   }
+}
 
-  Widget image(Uint8List image, Size size) {
+class CoverImage extends StatelessWidget {
+  const CoverImage({
+    Key? key,
+    required this.size,
+    required this.data,
+  }) : super(key: key);
+
+  final Size size;
+  final ItemData data;
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
         left: 4,
@@ -109,14 +148,17 @@ class ItemListCard extends StatelessWidget {
         bottom: 4,
         right: 8,
       ),
-      child: Container(
-        width: size.width * 0.3,
-        height: size.width * 0.3,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: MemoryImage(data.image),
+      child: Hero(
+        tag: data.title,
+        child: Container(
+          width: size.width * 0.3,
+          height: size.width * 0.3,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: MemoryImage(data.image),
+            ),
           ),
         ),
       ),

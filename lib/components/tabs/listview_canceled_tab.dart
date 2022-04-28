@@ -6,13 +6,13 @@ import 'package:amiamu/classes/item_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ListViewTab extends StatelessWidget {
-  const ListViewTab({Key? key}) : super(key: key);
+class ListViewCanceledTab extends StatelessWidget {
+  const ListViewCanceledTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Item>>(
-      future: Provider.of<DataSync>(context).getAllItems,
+      future: Provider.of<DataSync>(context).getCanceledItems,
       initialData: const [],
       builder: (context, snapshot) {
         if (snapshot.hasData) {
@@ -29,7 +29,7 @@ class ListViewTab extends StatelessWidget {
               },
             );
           } else {
-            return const Center(child: CircularProgressIndicator());
+            return const CircularProgressIndicator();
           }
         } else {
           return const Center(
