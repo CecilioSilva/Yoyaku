@@ -2,6 +2,7 @@ import 'package:yoyaku/classes/data_sync.dart';
 import 'package:yoyaku/classes/item_data.dart';
 import 'package:yoyaku/components/extras/type_tag.dart';
 import 'package:yoyaku/models/database_model.dart';
+import 'package:yoyaku/pages/item_page.dart';
 import 'package:yoyaku/pages/update_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -57,9 +58,9 @@ class _DatatableTabState extends State<DatatableTab> {
                       DataColumn(label: Text('Image')),
                       DataColumn(label: Text('Title')),
                       DataColumn(label: Text('Type')),
+                      DataColumn(label: Text('Total Price')),
                       DataColumn(label: Text('Release Date')),
                       DataColumn(label: Text('Date Bought')),
-                      DataColumn(label: Text('Total Price')),
                       DataColumn(
                         label: Text('Days until Release'),
                         numeric: true,
@@ -100,6 +101,13 @@ class _DatatableTabState extends State<DatatableTab> {
         final rates = context.watch<Map?>();
         ItemData data = ItemData(e, rates);
         return DataRow(
+          onLongPress: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: ((context) => ItemPage(data: data)),
+              ),
+            );
+          },
           cells: [
             DataCell(Image.memory(data.image, width: 50, height: 50)),
             DataCell(
@@ -113,8 +121,6 @@ class _DatatableTabState extends State<DatatableTab> {
               ),
             ),
             DataCell(TypeTag(data.type)),
-            DataCell(Text(data.releaseDate)),
-            DataCell(Text(data.dateBought)),
             DataCell(Text(
               data.totalPrice,
               style: const TextStyle(
@@ -122,6 +128,8 @@ class _DatatableTabState extends State<DatatableTab> {
                 fontSize: 18,
               ),
             )),
+            DataCell(Text(data.releaseDate)),
+            DataCell(Text(data.dateBought)),
             DataCell(Text(data.daysUntilRelease)),
             DataCell(Checkbox(
               value: data.paid,
@@ -150,7 +158,10 @@ class _DatatableTabState extends State<DatatableTab> {
             DataCell(
               GestureDetector(
                 onTap: () async {
-                  await launchUrlString(data.link);
+                  await launchUrlString(
+                    data.link,
+                    mode: LaunchMode.externalApplication,
+                  );
                 },
                 child: Text(
                   Uri.parse(data.link).host,
@@ -166,24 +177,27 @@ class _DatatableTabState extends State<DatatableTab> {
             DataCell(Text(data.daysSinceBought)),
             DataCell(Text(data.price)),
             DataCell(Text(data.shipping)),
-            DataCell(IconButton(
-              onPressed: () async {
-                Item item = await Provider.of<DataSync>(context, listen: false)
-                    .getItemById(
-                  data.uuid,
-                );
+            DataCell(
+              IconButton(
+                onPressed: () async {
+                  Item item =
+                      await Provider.of<DataSync>(context, listen: false)
+                          .getItemById(
+                    data.uuid,
+                  );
 
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: ((context) => UpdatePage(item: item)),
-                  ),
-                );
-              },
-              icon: const Icon(
-                Icons.edit,
-                color: Colors.orange,
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: ((context) => UpdatePage(item: item)),
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.edit,
+                  color: Colors.orange,
+                ),
               ),
-            )),
+            ),
           ],
         );
       },

@@ -3,6 +3,7 @@ import 'package:yoyaku/classes/data_sync.dart';
 import 'package:yoyaku/classes/item_data.dart';
 import 'package:yoyaku/components/extras/type_tag.dart';
 import 'package:yoyaku/models/database_model.dart';
+import 'package:yoyaku/pages/item_page.dart';
 import 'package:yoyaku/pages/update_page.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,14 @@ class ItemGridCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
-        onTap: () async {
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: ((context) => ItemPage(data: data)),
+            ),
+          );
+        },
+        onLongPress: () async {
           Item item =
               await Provider.of<DataSync>(context, listen: false).getItemById(
             data.uuid,
