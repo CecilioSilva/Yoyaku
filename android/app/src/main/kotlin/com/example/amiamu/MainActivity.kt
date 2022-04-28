@@ -1,4 +1,4 @@
-package com.example.amiamu
+package com.example.yoyaku
 
 import io.flutter.embedding.android.FlutterActivity
 

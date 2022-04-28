@@ -685,8 +685,8 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
   }
 }
 
-abstract class _$AmiAmuDatabase extends GeneratedDatabase {
-  _$AmiAmuDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
+abstract class _$YoyakuDatabase extends GeneratedDatabase {
+  _$YoyakuDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   late final $ItemsTable items = $ItemsTable(this);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();

@@ -1,5 +1,5 @@
-import 'package:amiamu/classes/item_data.dart';
-import 'package:amiamu/pages/update_page.dart';
+import 'package:yoyaku/classes/item_data.dart';
+import 'package:yoyaku/pages/update_page.dart';
 import 'package:flutter/material.dart';
 
 class ItemGalleryCard extends StatelessWidget {

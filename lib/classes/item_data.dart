@@ -1,7 +1,7 @@
 import 'dart:developer';
 
-import 'package:amiamu/models/database_model.dart';
-import 'package:amiamu/services/get_currency.dart';
+import 'package:yoyaku/models/database_model.dart';
+import 'package:yoyaku/services/get_currency.dart';
 import 'package:drift/drift.dart';
 import 'package:intl/intl.dart';
 

@@ -1,6 +1,6 @@
-import 'package:amiamu/classes/item_data.dart';
-import 'package:amiamu/components/extras/type_tag.dart';
-import 'package:amiamu/pages/update_page.dart';
+import 'package:yoyaku/classes/item_data.dart';
+import 'package:yoyaku/components/extras/type_tag.dart';
+import 'package:yoyaku/pages/update_page.dart';
 import 'package:flutter/material.dart';
 
 class ItemGridCard extends StatelessWidget {

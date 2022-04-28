@@ -1,6 +1,6 @@
-import 'package:amiamu/classes/data_sync.dart';
-import 'package:amiamu/pages/home_page.dart';
-import 'package:amiamu/services/get_exchange_rate.dart';
+import 'package:yoyaku/classes/data_sync.dart';
+import 'package:yoyaku/pages/home_page.dart';
+import 'package:yoyaku/services/get_exchange_rate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -29,8 +29,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.dark(),
-      title: 'AmiAmu',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.dark().copyWith(
+        colorScheme: ColorScheme.fromSwatch(
+          accentColor: Colors.orange,
+        ),
+      ),
+      title: 'Yoyaku',
       home: const HomePage(),
     );
   }

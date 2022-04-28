@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
-project(amiamu LANGUAGES CXX)
+project(yoyaku LANGUAGES CXX)
 
-set(BINARY_NAME "amiamu")
+set(BINARY_NAME "yoyaku")
 
 cmake_policy(SET CMP0063 NEW)
 

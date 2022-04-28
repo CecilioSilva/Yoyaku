@@ -1,4 +1,4 @@
-import 'package:amiamu/services/get_currency.dart';
+import 'package:yoyaku/services/get_currency.dart';
 import 'package:flutter/material.dart';
 
 class CustomNumberFormField extends StatelessWidget {

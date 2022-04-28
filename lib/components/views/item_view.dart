@@ -1,8 +1,8 @@
-import 'package:amiamu/components/extras/icon_toggle.dart';
-import 'package:amiamu/components/views/gallery_view.dart';
-import 'package:amiamu/components/views/grid_view.dart';
-import 'package:amiamu/components/views/list_view.dart';
-import 'package:amiamu/models/database_model.dart';
+import 'package:yoyaku/components/extras/icon_toggle.dart';
+import 'package:yoyaku/components/views/gallery_view.dart';
+import 'package:yoyaku/components/views/grid_view.dart';
+import 'package:yoyaku/components/views/list_view.dart';
+import 'package:yoyaku/models/database_model.dart';
 import 'package:flutter/material.dart';
 
 enum ViewType {

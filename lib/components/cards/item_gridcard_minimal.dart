@@ -1,5 +1,5 @@
-import 'package:amiamu/classes/item_data.dart';
-import 'package:amiamu/pages/update_page.dart';
+import 'package:yoyaku/classes/item_data.dart';
+import 'package:yoyaku/pages/update_page.dart';
 import 'package:flutter/material.dart';
 
 class ItemGridMinimalCard extends StatelessWidget {
@@ -86,7 +86,7 @@ class CoverImage extends StatelessWidget {
         tag: data.title,
         child: Container(
           width: size.width * 0.45,
-          height: size.width * 0.3,
+          height: size.width * 0.45,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
             image: DecorationImage(

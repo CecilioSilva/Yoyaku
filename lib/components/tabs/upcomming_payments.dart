@@ -1,5 +1,5 @@
-import 'package:amiamu/classes/data_sync.dart';
-import 'package:amiamu/components/views/item_view.dart';
+import 'package:yoyaku/classes/data_sync.dart';
+import 'package:yoyaku/components/views/item_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -26,8 +26,8 @@ class Items extends Table {
 }
 
 @DriftDatabase(tables: [Items])
-class AmiAmuDatabase extends _$AmiAmuDatabase {
-  AmiAmuDatabase() : super(_openConnection());
+class YoyakuDatabase extends _$YoyakuDatabase {
+  YoyakuDatabase() : super(_openConnection());
 
   @override
   int get schemaVersion => 2;
@@ -40,6 +40,9 @@ class AmiAmuDatabase extends _$AmiAmuDatabase {
 
   Future<List<Item>> get allCanceledItems =>
       (select(items)..where((tbl) => tbl.canceled)).get();
+
+  Future<List<Item>> get allDeliveredItems =>
+      (select(items)..where((tbl) => tbl.delivered)).get();
 
   Future<Item> itemByUuid(String uuid) {
     return (select(items)

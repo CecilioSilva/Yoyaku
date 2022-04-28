@@ -1,5 +1,5 @@
-import 'package:amiamu/models/database_model.dart';
-import 'package:amiamu/services/check_connection.dart';
+import 'package:yoyaku/models/database_model.dart';
+import 'package:yoyaku/services/check_connection.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -7,7 +7,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:uuid/uuid.dart';
 
 class DataSync extends ChangeNotifier {
-  static final AmiAmuDatabase _localDatabase = AmiAmuDatabase();
+  static final YoyakuDatabase _localDatabase = YoyakuDatabase();
   static Map? exchangeRates;
   List<Item> allItems = [];
 
@@ -30,6 +30,9 @@ class DataSync extends ChangeNotifier {
 
   Future<List<Item>> get getCanceledItems async =>
       await _localDatabase.allCanceledItems;
+
+  Future<List<Item>> get getDeliveredItems async =>
+      await _localDatabase.allDeliveredItems;
 
   Map? get getExchangeRate => exchangeRates;
 

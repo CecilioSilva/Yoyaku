@@ -1,12 +1,13 @@
-import 'package:amiamu/components/tabs/calendar_tab.dart';
-import 'package:amiamu/components/tabs/datatable_tab.dart';
-import 'package:amiamu/components/tabs/gallery_tab.dart';
-import 'package:amiamu/components/tabs/montly_tab.dart';
-import 'package:amiamu/components/tabs/upcomming_items_tab.dart';
-import 'package:amiamu/components/tabs/all_tab.dart';
-import 'package:amiamu/components/tabs/canceled_items_tab.dart';
-import 'package:amiamu/components/tabs/upcomming_payments.dart';
-import 'package:amiamu/pages/util_page.dart';
+import 'package:yoyaku/components/tabs/calendar_tab.dart';
+import 'package:yoyaku/components/tabs/collection_tab.dart';
+import 'package:yoyaku/components/tabs/datatable_tab.dart';
+import 'package:yoyaku/components/tabs/gallery_tab.dart';
+import 'package:yoyaku/components/tabs/montly_tab.dart';
+import 'package:yoyaku/components/tabs/upcomming_items_tab.dart';
+import 'package:yoyaku/components/tabs/all_tab.dart';
+import 'package:yoyaku/components/tabs/canceled_items_tab.dart';
+import 'package:yoyaku/components/tabs/upcomming_payments.dart';
+import 'package:yoyaku/pages/util_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -25,6 +26,7 @@ class _HomePageState extends State<HomePage> {
     [Tab(icon: Icon(Icons.payment)), UpcommingPaymentTab()],
     [Tab(icon: Icon(Icons.image_outlined)), GalleryTab()],
     [Tab(icon: Icon(Icons.calendar_month)), MontlyTab()],
+    [Tab(icon: Icon(Icons.collections_bookmark)), CollectionTab()],
     [Tab(icon: Icon(Icons.cancel_outlined)), CanceledTab()],
     [Tab(icon: Icon(Icons.data_object_rounded)), DatatableTab()],
   ];
@@ -44,6 +46,9 @@ class _HomePageState extends State<HomePage> {
           centerTitle: true,
           bottom: TabBar(
             indicatorColor: Colors.red,
+            indicatorWeight: 3,
+            labelColor: Colors.red,
+            unselectedLabelColor: Colors.grey.shade300,
             tabs: tabs.map((e) => e[0]).toList(),
           ),
         ),

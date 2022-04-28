@@ -1,4 +1,4 @@
-import 'package:amiamu/components/tabs/add_tab.dart';
+import 'package:yoyaku/components/tabs/add_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

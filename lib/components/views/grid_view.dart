@@ -1,9 +1,9 @@
-import 'package:amiamu/classes/item_data.dart';
-import 'package:amiamu/components/cards/item_gridcard.dart';
-import 'package:amiamu/components/extras/custom_error.dart';
-import 'package:amiamu/components/extras/loading.dart';
-import 'package:amiamu/components/extras/non_found.dart';
-import 'package:amiamu/models/database_model.dart';
+import 'package:yoyaku/classes/item_data.dart';
+import 'package:yoyaku/components/cards/item_gridcard.dart';
+import 'package:yoyaku/components/extras/custom_error.dart';
+import 'package:yoyaku/components/extras/loading.dart';
+import 'package:yoyaku/components/extras/non_found.dart';
+import 'package:yoyaku/models/database_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

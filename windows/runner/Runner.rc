@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "amiamu" "\0"
+            VALUE "FileDescription", "yoyaku" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "amiamu" "\0"
+            VALUE "InternalName", "yoyaku" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2022 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "amiamu.exe" "\0"
-            VALUE "ProductName", "amiamu" "\0"
+            VALUE "OriginalFilename", "yoyaku.exe" "\0"
+            VALUE "ProductName", "yoyaku" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
