@@ -2,6 +2,7 @@ import 'package:amiamu/classes/data_sync.dart';
 import 'package:amiamu/classes/item_data.dart';
 import 'package:amiamu/components/extras/type_tag.dart';
 import 'package:amiamu/models/database_model.dart';
+import 'package:amiamu/pages/update_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -13,7 +14,7 @@ class DatatableTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder<List<Item>>(
       future: Provider.of<DataSync>(context).getAllItems,
-      initialData: [],
+      initialData: const [],
       builder: ((context, snapshot) {
         if (!snapshot.hasData) {
           return const Center(
@@ -114,8 +115,12 @@ class DatatableTab extends StatelessWidget {
                       DataCell(Text(data.shipping)),
                       DataCell(IconButton(
                         onPressed: () {
-                          //TODO: Add Item Editing
-                          print('Editing ${data.uuid}');
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: ((context) =>
+                                  UpdatePage(uuid: data.uuid)),
+                            ),
+                          );
                         },
                         icon: const Icon(
                           Icons.edit,

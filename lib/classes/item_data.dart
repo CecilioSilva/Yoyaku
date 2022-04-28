@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amiamu/models/database_model.dart';
 import 'package:amiamu/services/get_currency.dart';
 import 'package:drift/drift.dart';
@@ -80,7 +82,9 @@ class ItemData {
   double getEuro(double price, String currency) {
     try {
       return price / exchangeRates[currency];
-    } catch (e) {}
+    } catch (e) {
+      log(e.toString());
+    }
 
     return price;
   }

@@ -1,7 +1,4 @@
 import 'package:amiamu/classes/data_sync.dart';
-import 'package:amiamu/classes/item_data.dart';
-import 'package:amiamu/components/cards/item_listcard.dart';
-import 'package:amiamu/components/extras/non_found.dart';
 import 'package:amiamu/components/views/item_view.dart';
 import 'package:amiamu/models/database_model.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +26,6 @@ class _CalendarTabState extends State<CalendarTab> {
   @override
   Widget build(BuildContext context) {
     Provider.of<DataSync>(context).reload();
-    var size = MediaQuery.of(context).size;
 
     DateFormat _dateFormat = DateFormat.yMMMMd();
 

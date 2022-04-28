@@ -15,13 +15,13 @@ Future<Map> getExchange() async {
   document.findAllElements('Cube').forEach(
     (element) {
       if (element.children.isNotEmpty) {
-        element.children.forEach((p0) {
+        for (var p0 in element.children) {
           if (p0.getAttribute('currency') != null) {
             rates[p0.getAttribute('currency')] = double.parse(
               p0.getAttribute('rate') ?? '1',
             );
           }
-        });
+        }
       }
     },
   );

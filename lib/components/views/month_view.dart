@@ -35,40 +35,47 @@ class ItemMonthView extends StatelessWidget {
               itemBuilder: (context, keyIndex) {
                 List itemList = snapshot.data!.values.toList()[keyIndex];
 
-                return Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          keyList[keyIndex],
-                          style: const TextStyle(
-                            color: Colors.orange,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                            decoration: TextDecoration.underline,
+                return Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              keyList[keyIndex],
+                              style: const TextStyle(
+                                color: Colors.orange,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 20,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    GridView.builder(
-                      shrinkWrap: true,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 8,
-                        crossAxisSpacing: 8,
-                        childAspectRatio: 0.75,
+                        ],
                       ),
-                      itemCount: itemList.length,
-                      itemBuilder: (context, itemIndex) {
-                        final rates = context.watch<Map?>();
-                        Item item = itemList[itemIndex];
-                        ItemData data = ItemData(item, rates);
-                        return ItemGridMinimalCard(data);
-                      },
-                    ),
-                  ],
+                      GridView.builder(
+                        shrinkWrap: true,
+                        physics: const ClampingScrollPhysics(),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 8,
+                          crossAxisSpacing: 8,
+                          childAspectRatio: 0.75,
+                        ),
+                        itemCount: itemList.length,
+                        itemBuilder: (context, itemIndex) {
+                          final rates = context.watch<Map?>();
+                          Item item = itemList[itemIndex];
+                          ItemData data = ItemData(item, rates);
+                          return ItemGridMinimalCard(data);
+                        },
+                      ),
+                    ],
+                  ),
                 );
               },
             );

@@ -61,7 +61,7 @@ class DataSync extends ChangeNotifier {
 
   Future<Map<String, List<Item>>> getMontlyItems() async {
     final DateFormat formatter = DateFormat.yMMMM();
-    List<Item> allItems = await _localDatabase.allCanceledItems;
+    List<Item> allItems = await _localDatabase.allUnCanceledItems;
     Map<String, List<Item>> result = {};
 
     for (Item item in allItems) {
@@ -75,6 +75,10 @@ class DataSync extends ChangeNotifier {
     }
 
     return result;
+  }
+
+  void updateItem(Item entry) {
+    _localDatabase.updateItem(entry);
   }
 
   void addItem({
@@ -133,8 +137,6 @@ class DataSync extends ChangeNotifier {
 
   close() {
     _localDatabase.close();
-
-    //TODO: sync to cloud database;
   }
 }
 

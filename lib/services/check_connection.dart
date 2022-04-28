@@ -11,7 +11,6 @@ Future<bool> checkConnection() async {
   } else if (result == ConnectivityResult.mobile) {
     log("Internet connection is from Mobile data");
     return false;
-    //TODO: mobile data setting
   } else if (result == ConnectivityResult.none) {
     log("No internet connection");
     return false;

@@ -60,6 +60,11 @@ class AmiAmuDatabase extends _$AmiAmuDatabase {
   Future<int> addItem(ItemsCompanion entry) {
     return into(items).insert(entry);
   }
+
+  // Update
+  Future updateItem(Item entry) {
+    return update(items).replace(entry);
+  }
 }
 
 LazyDatabase _openConnection() {

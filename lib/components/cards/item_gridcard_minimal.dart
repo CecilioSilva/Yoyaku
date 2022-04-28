@@ -1,4 +1,5 @@
 import 'package:amiamu/classes/item_data.dart';
+import 'package:amiamu/pages/update_page.dart';
 import 'package:flutter/material.dart';
 
 class ItemGridMinimalCard extends StatelessWidget {
@@ -13,8 +14,11 @@ class ItemGridMinimalCard extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
         onTap: () {
-          //TODO: Add Item Editing
-          print('Editing ${data.uuid}');
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: ((context) => UpdatePage(uuid: data.uuid)),
+            ),
+          );
         },
         child: Container(
           decoration: BoxDecoration(
