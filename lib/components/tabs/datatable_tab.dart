@@ -15,12 +15,8 @@ class DatatableTab extends StatefulWidget {
 }
 
 class _DatatableTabState extends State<DatatableTab> {
-  int rowCount = -1;
-
   @override
   Widget build(BuildContext context) {
-    rowCount = -1;
-
     var size = MediaQuery.of(context).size;
     return FutureBuilder<List<Item>>(
       future: Provider.of<DataSync>(context).getAllItems,
@@ -171,10 +167,15 @@ class _DatatableTabState extends State<DatatableTab> {
             DataCell(Text(data.price)),
             DataCell(Text(data.shipping)),
             DataCell(IconButton(
-              onPressed: () {
+              onPressed: () async {
+                Item item = await Provider.of<DataSync>(context, listen: false)
+                    .getItemById(
+                  data.uuid,
+                );
+
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: ((context) => UpdatePage(uuid: data.uuid)),
+                    builder: ((context) => UpdatePage(item: item)),
                   ),
                 );
               },

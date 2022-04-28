@@ -1,4 +1,7 @@
+import 'package:provider/provider.dart';
+import 'package:yoyaku/classes/data_sync.dart';
 import 'package:yoyaku/classes/item_data.dart';
+import 'package:yoyaku/models/database_model.dart';
 import 'package:yoyaku/pages/update_page.dart';
 import 'package:flutter/material.dart';
 
@@ -13,10 +16,15 @@ class ItemGalleryCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
-        onTap: () {
+        onTap: () async {
+          Item item =
+              await Provider.of<DataSync>(context, listen: false).getItemById(
+            data.uuid,
+          );
+
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: ((context) => UpdatePage(uuid: data.uuid)),
+              builder: ((context) => UpdatePage(item: item)),
             ),
           );
         },

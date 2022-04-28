@@ -4,11 +4,13 @@ import 'package:intl/intl.dart';
 class CustomDatePickerFormField extends StatefulWidget {
   final void Function(DateTime) onChanged;
   final String title;
+  final DateTime? initialValue;
 
   const CustomDatePickerFormField({
     Key? key,
     required this.onChanged,
     required this.title,
+    this.initialValue,
   }) : super(key: key);
 
   @override
@@ -20,6 +22,14 @@ class _CustomDatePickerFormFieldState extends State<CustomDatePickerFormField> {
   final f = DateFormat.yMMMMd('en_US');
   DateTime _date = DateTime.now();
   bool changed = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialValue != null) {
+      _date = widget.initialValue!;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

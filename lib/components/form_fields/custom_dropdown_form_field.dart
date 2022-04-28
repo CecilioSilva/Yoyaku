@@ -4,7 +4,7 @@ class CustomDropDownField extends StatelessWidget {
   final List<CustomDropdownValue> items;
   final void Function(String?) onChanged;
   final String title;
-  final Object? initalValue;
+  final String? initalValue;
 
   const CustomDropDownField({
     Key? key,
@@ -14,8 +14,6 @@ class CustomDropDownField extends StatelessWidget {
     this.initalValue,
   }) : super(key: key);
 
-  // TODO: Update page intial value
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -23,6 +21,7 @@ class CustomDropDownField extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(4.0),
           child: DropdownButtonFormField<String>(
+            value: initalValue,
             style: const TextStyle(
               fontSize: 20,
             ),

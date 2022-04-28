@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 class CustomImageFormField extends StatefulWidget {
   final void Function(Uint8List) onChanged;
   final String title;
+  final Uint8List? initialValue;
 
   const CustomImageFormField({
     Key? key,
     required this.onChanged,
     required this.title,
+    this.initialValue,
   }) : super(key: key);
 
   @override
@@ -35,6 +37,14 @@ class _CustomImageFormFieldState extends State<CustomImageFormField> {
       }
     }
     setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialValue != null) {
+      _image = widget.initialValue;
+    }
   }
 
   @override
