@@ -23,6 +23,10 @@ class DataSync extends ChangeNotifier {
   }
 
   Future<List<Item>> get getAllItems async => await _localDatabase.allItems;
+
+  Future<List<Item>> get getAllUnCanceledItems async =>
+      await _localDatabase.allUnCanceledItems;
+
   Future<List<Item>> get getCanceledItems async =>
       await _localDatabase.allCanceledItems;
 

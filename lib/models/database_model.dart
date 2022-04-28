@@ -35,6 +35,9 @@ class AmiAmuDatabase extends _$AmiAmuDatabase {
   // READ
   Future<List<Item>> get allItems => select(items).get();
 
+  Future<List<Item>> get allUnCanceledItems =>
+      (select(items)..where((tbl) => tbl.canceled.not())).get();
+
   Future<List<Item>> get allCanceledItems =>
       (select(items)..where((tbl) => tbl.canceled)).get();
 

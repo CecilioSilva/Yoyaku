@@ -1,5 +1,6 @@
 import 'package:amiamu/components/tabs/calendar_tab.dart';
 import 'package:amiamu/components/tabs/datatable_tab.dart';
+import 'package:amiamu/components/tabs/gallery_tab.dart';
 import 'package:amiamu/components/tabs/upcomming_items_tab.dart';
 import 'package:amiamu/components/tabs/all_tab.dart';
 import 'package:amiamu/components/tabs/canceled_items_tab.dart';
@@ -19,9 +20,10 @@ class _HomePageState extends State<HomePage> {
   List<List<Widget>> tabs = const [
     [Tab(icon: Icon(Icons.list_alt)), AllTab()],
     [Tab(icon: Icon(Icons.calendar_today_rounded)), CalendarTab()],
-    [Tab(icon: Icon(Icons.cancel_outlined)), CanceledTab()],
     [Tab(icon: Icon(Icons.local_shipping)), UpcommingTab()],
     [Tab(icon: Icon(Icons.payment)), UpcommingPaymentTab()],
+    [Tab(icon: Icon(Icons.image_outlined)), GalleryTab()],
+    [Tab(icon: Icon(Icons.cancel_outlined)), CanceledTab()],
     [Tab(icon: Icon(Icons.data_object_rounded)), DatatableTab()],
   ];
 

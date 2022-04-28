@@ -2,6 +2,7 @@ import 'package:amiamu/classes/data_sync.dart';
 import 'package:amiamu/classes/item_data.dart';
 import 'package:amiamu/components/cards/item_listcard.dart';
 import 'package:amiamu/components/extras/non_found.dart';
+import 'package:amiamu/components/views/item_view.dart';
 import 'package:amiamu/models/database_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -78,37 +79,13 @@ class _CalendarTabState extends State<CalendarTab> {
           height: 2,
           color: Colors.orange,
         ),
-        Center(
-          child: Text(
-            _dateFormat.format(_selectedDay!),
-            style: TextStyle(
-              fontSize: size.width * 0.08,
-            ),
-          ),
-        ),
         Expanded(
-          child: FutureBuilder<List<Item>>(
-            future: Provider.of<DataSync>(context).getItemsByDay(_selectedDay!),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else {
-                var value = snapshot.data;
-                if (value!.isEmpty) return const NonFound();
-
-                return ListView.builder(
-                  itemCount: value.length,
-                  itemBuilder: (context, index) {
-                    final rates = context.watch<Map?>();
-                    Item item = value[index];
-                    ItemData data = ItemData(item, rates);
-                    return ItemListCard(data);
-                  },
-                );
-              }
-            },
+          child: ItemView(
+            itemFuture: Provider.of<DataSync>(context).getItemsByDay(
+              _selectedDay!,
+            ),
+            title: _dateFormat.format(_selectedDay!),
+            canChange: false,
           ),
         ),
       ],

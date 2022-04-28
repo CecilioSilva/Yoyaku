@@ -24,6 +24,8 @@ class ItemListView extends StatelessWidget {
           if (snapshot.hasError) {
             return CustomError(error: snapshot.error);
           } else if (snapshot.hasData) {
+            if (snapshot.data!.isEmpty) return const NonFound();
+
             return ListView.builder(
               itemCount: snapshot.data!.length,
               itemBuilder: (BuildContext context, int index) {
