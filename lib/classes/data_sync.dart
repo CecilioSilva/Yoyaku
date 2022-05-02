@@ -66,7 +66,7 @@ class DataSync extends ChangeNotifier {
 
   Future<Map<String, List<Item>>> getMontlyItems() async {
     final DateFormat formatter = DateFormat.yMMMM();
-    List<Item> allItems = await _localDatabase.allUnCanceledItems;
+    List<Item> allItems = await _localDatabase.allMontlyItems;
     Map<String, List<Item>> result = {};
 
     for (Item item in allItems) {

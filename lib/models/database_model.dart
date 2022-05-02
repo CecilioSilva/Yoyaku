@@ -38,6 +38,14 @@ class YoyakuDatabase extends _$YoyakuDatabase {
   Future<List<Item>> get allUnCanceledItems =>
       (select(items)..where((tbl) => tbl.canceled.not())).get();
 
+  Future<List<Item>> get allMontlyItems => (select(items)
+        ..orderBy([
+          (u) =>
+              OrderingTerm(expression: u.releaseDate, mode: OrderingMode.desc)
+        ])
+        ..where((tbl) => tbl.canceled.not()))
+      .get();
+
   Future<List<Item>> get allCanceledItems =>
       (select(items)..where((tbl) => tbl.canceled)).get();
 
