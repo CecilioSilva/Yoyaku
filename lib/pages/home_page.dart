@@ -3,6 +3,7 @@ import 'package:yoyaku/components/tabs/calendar_tab.dart';
 import 'package:yoyaku/components/tabs/collection_tab.dart';
 import 'package:yoyaku/components/tabs/datatable_tab.dart';
 import 'package:yoyaku/components/tabs/gallery_tab.dart';
+import 'package:yoyaku/components/tabs/items_tab.dart';
 import 'package:yoyaku/components/tabs/montly_tab.dart';
 import 'package:yoyaku/components/tabs/total_tab.dart';
 import 'package:yoyaku/components/tabs/upcomming_items_tab.dart';
@@ -32,6 +33,7 @@ class _HomePageState extends State<HomePage> {
     [Tab(icon: Icon(Icons.collections_bookmark)), CollectionTab()],
     [Tab(icon: Icon(Icons.receipt_long)), TotalTab()],
     [Tab(icon: Icon(Icons.cancel_outlined)), CanceledTab()],
+    [Tab(icon: Icon(Icons.select_all)), ItemsTab()],
     [Tab(icon: Icon(Icons.data_object_rounded)), DatatableTab()],
   ];
 
