@@ -9,6 +9,7 @@ class ItemData {
   static double importPercentage = 4.7;
   static double handlingFee = 12;
 
+  late int id;
   late String uuid;
   late String type;
   late String title;
@@ -34,6 +35,7 @@ class ItemData {
   late double vatRaw;
 
   ItemData(Item data, rates) {
+    id = data.id;
     exchangeRates = rates;
     uuid = data.uuid;
     type = ['Figure', 'Manga', 'Game', 'Other'][data.type];

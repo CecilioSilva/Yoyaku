@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
+import 'package:yoyaku/services/get_amiami_date.dart';
 
 class AmiAmiItem {
   final String productUrl;
@@ -291,8 +292,7 @@ class AmiAmiResultSet {
       productInfo.cPriceTaxed.toString(),
       productInfo.gcode.toString(),
       availability,
-      DateTime.tryParse(productInfo.releasedate ?? DateTime.now().toString()) ??
-          DateTime.now(),
+      getAmiAmiDate(productInfo.releasedate),
       flags,
     );
 

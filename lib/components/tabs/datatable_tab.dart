@@ -35,6 +35,7 @@ class _DatatableTabState extends State<DatatableTab> {
                   left: 8.0,
                   top: 10,
                   right: 8,
+                  bottom: 10,
                 ),
                 child: Row(
                   children: [
@@ -49,42 +50,45 @@ class _DatatableTabState extends State<DatatableTab> {
                   ],
                 ),
               ),
-              SingleChildScrollView(
-                scrollDirection: Axis.vertical,
+              Expanded(
                 child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: DataTable(
-                    columns: const [
-                      DataColumn(label: Text('Image')),
-                      DataColumn(label: Text('Title')),
-                      DataColumn(label: Text('Type')),
-                      DataColumn(label: Text('Total Price')),
-                      DataColumn(label: Text('Release Date')),
-                      DataColumn(label: Text('Date Bought')),
-                      DataColumn(
-                        label: Text('Days until Release'),
-                        numeric: true,
-                      ),
-                      DataColumn(label: Text('Paid')),
-                      DataColumn(label: Text('Delivered')),
-                      DataColumn(label: Text('Canceled')),
-                      DataColumn(label: Text('Import')),
-                      DataColumn(label: Text('Link')),
-                      DataColumn(
-                        label: Text('Days since Bought'),
-                        numeric: true,
-                      ),
-                      DataColumn(
-                        label: Text('Price'),
-                        numeric: true,
-                      ),
-                      DataColumn(
-                        label: Text('Shipping'),
-                        numeric: true,
-                      ),
-                      DataColumn(label: Text('Edit')),
-                    ],
-                    rows: getDataRows(context, snapshot.data),
+                  scrollDirection: Axis.vertical,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: DataTable(
+                      columns: const [
+                        DataColumn(label: Text('#')),
+                        DataColumn(label: Text('Image')),
+                        DataColumn(label: Text('Title')),
+                        DataColumn(label: Text('Type')),
+                        DataColumn(label: Text('Total Price')),
+                        DataColumn(label: Text('Release Date')),
+                        DataColumn(label: Text('Date Bought')),
+                        DataColumn(
+                          label: Text('Days until Release'),
+                          numeric: true,
+                        ),
+                        DataColumn(label: Text('Paid')),
+                        DataColumn(label: Text('Delivered')),
+                        DataColumn(label: Text('Canceled')),
+                        DataColumn(label: Text('Import')),
+                        DataColumn(label: Text('Link')),
+                        DataColumn(
+                          label: Text('Days since Bought'),
+                          numeric: true,
+                        ),
+                        DataColumn(
+                          label: Text('Price'),
+                          numeric: true,
+                        ),
+                        DataColumn(
+                          label: Text('Shipping'),
+                          numeric: true,
+                        ),
+                        DataColumn(label: Text('Edit')),
+                      ],
+                      rows: getDataRows(context, snapshot.data),
+                    ),
                   ),
                 ),
               ),
@@ -96,8 +100,12 @@ class _DatatableTabState extends State<DatatableTab> {
   }
 
   List<DataRow> getDataRows(BuildContext context, List<Item>? data) {
+    int count = 0;
     return data!.map(
       (e) {
+        count += 1;
+        bool isAlternate = count % 2 == 0;
+
         final rates = context.watch<Map?>();
         ItemData data = ItemData(e, rates);
         return DataRow(
@@ -108,8 +116,44 @@ class _DatatableTabState extends State<DatatableTab> {
               ),
             );
           },
+          color: MaterialStateProperty.all(
+            isAlternate ? Colors.transparent : Colors.orange.withOpacity(0.1),
+          ),
           cells: [
-            DataCell(Image.memory(data.image, width: 50, height: 50)),
+            DataCell(
+              Text(
+                data.id.toString(),
+                style: const TextStyle(
+                  color: Colors.redAccent,
+                  fontSize: 18,
+                ),
+              ),
+            ),
+            DataCell(
+              Hero(
+                tag: data.title,
+                child: Image.memory(data.image, width: 50, height: 50),
+              ),
+              onTap: () {
+                Size size = MediaQuery.of(context).size;
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => Hero(
+                    tag: data.title,
+                    child: Center(
+                      child: SizedBox(
+                        child: ClipRRect(
+                          child: Image.memory(data.image),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        width: size.width * 0.8,
+                        height: size.width * 0.8,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
             DataCell(
               Text(
                 data.title,
