@@ -1,8 +1,5 @@
 import 'dart:typed_data';
 import 'package:yoyaku/classes/data_sync.dart';
-import 'package:yoyaku/components/extras/custom_error.dart';
-import 'package:yoyaku/components/extras/loading.dart';
-import 'package:yoyaku/components/extras/non_found.dart';
 import 'package:yoyaku/components/form_fields/custom_checkbox_form_field.dart';
 import 'package:yoyaku/components/form_fields/custom_datepicker_form_field.dart';
 import 'package:yoyaku/components/form_fields/custom_dropdown_form_field.dart';

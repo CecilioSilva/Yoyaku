@@ -160,6 +160,7 @@ class DataSync extends ChangeNotifier {
 
   void updateItem(Item entry) {
     _localDatabase.updateItem(entry);
+    notifyListeners();
   }
 
   void addItem({
