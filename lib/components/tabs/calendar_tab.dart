@@ -57,7 +57,7 @@ class _CalendarTabState extends State<CalendarTab> {
           },
           calendarStyle: CalendarStyle(
             todayDecoration: ShapeDecoration(
-              color: Colors.green.withOpacity(0.7),
+              color: Colors.red.withOpacity(0.7),
               shape: const CircleBorder(),
             ),
             selectedDecoration: const ShapeDecoration(
