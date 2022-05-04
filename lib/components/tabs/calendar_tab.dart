@@ -49,7 +49,7 @@ class _CalendarTabState extends State<CalendarTab> {
             var allItems = Provider.of<DataSync>(context).allItems;
             List<Item> items = [];
             for (Item item in allItems) {
-              if (isSameDay(item.releaseDate, selectedDay)) {
+              if (isSameDay(item.releaseDate, selectedDay) && !item.canceled) {
                 items.add(item);
               }
             }
