@@ -1,3 +1,13 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:csv/csv.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:file_saver/file_saver.dart';
+import 'package:flutter_archive/flutter_archive.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:yoyaku/classes/item_data.dart';
 import 'package:yoyaku/classes/total_data.dart';
 import 'package:yoyaku/models/database_model.dart';
@@ -13,10 +23,8 @@ class DataSync extends ChangeNotifier {
   static final YoyakuDatabase _localDatabase = YoyakuDatabase();
   static Map? exchangeRates;
   List<Item> allItems = [];
-  final String _userId;
-  final String username;
 
-  DataSync(this._userId, this.username) {
+  DataSync() {
     syncDatabase();
   }
 
@@ -219,7 +227,110 @@ class DataSync extends ChangeNotifier {
     allItems = await _localDatabase.allItems;
   }
 
-  close() {
+  void saveDatabase() async {
+    List<Item> allItems = await _localDatabase.allItems;
+    List<List<dynamic>> rows = <List<dynamic>>[];
+    List<List> images = [];
+
+    for (int i = allItems.length - 1; i > 0; i--) {
+      List<dynamic> row = [];
+
+      images.add([allItems[i].uuid, allItems[i].image]);
+
+      row.add(allItems[i].id);
+      row.add(allItems[i].uuid);
+      row.add(allItems[i].type);
+      row.add(allItems[i].title);
+      row.add(allItems[i].dateBought);
+      row.add(allItems[i].releaseDate);
+      row.add(allItems[i].currency);
+      row.add(allItems[i].price);
+      row.add(allItems[i].shipping);
+      // row.add(allItems[i].image);
+      row.add(allItems[i].link);
+      row.add(allItems[i].delivered);
+      row.add(allItems[i].import);
+      row.add(allItems[i].paid);
+      row.add(allItems[i].canceled);
+      rows.add(row);
+    }
+
+    if (await Permission.manageExternalStorage.request().isGranted) {
+      String csv = const ListToCsvConverter().convert(rows);
+
+      final DateTime now = DateTime.now();
+      final DateFormat formatter = DateFormat("yy-MM-dd_HH-mm");
+      final String formatted = formatter.format(now);
+
+      final _localPath = await getApplicationDocumentsDirectory();
+      final directory = _localPath.path;
+
+      List<File> imageFiles = [];
+
+      for (List image in images) {
+        final file = File('$directory/backup/images/${image[0]}.jpg');
+        file.create(recursive: true);
+        file.writeAsBytesSync(image[1]);
+        imageFiles.add(file);
+      }
+
+      final dataFile = File('$directory/backup/yoyaku_data_$formatted.csv');
+      dataFile.create(recursive: true);
+      dataFile.writeAsStringSync(csv);
+
+      final dataDir = Directory('$directory/backup/');
+      try {
+        final zipFile = File('$directory/backup.zip');
+        ZipFile.createFromDirectory(
+          sourceDir: dataDir,
+          zipFile: zipFile,
+          recurseSubDirs: true,
+        );
+      } catch (e) {
+        print(e);
+      }
+    }
+  }
+
+  // void importDatabase(String failedMessage, String successMessage) async {
+  //   FilePickerResult? result = await FilePicker.platform.pickFiles(
+  //     type: FileType.custom,
+  //     allowedExtensions: ['csv'],
+  //   );
+
+  //   try {
+  //     if (result != null) {
+  //       File file = File(result.files.single.path as String);
+  //       String text = await file.readAsString();
+  //       List<List<dynamic>> rows = const CsvToListConverter().convert(text);
+
+  //       for (int i = 0; i < rows.length; i++) {
+  //         List<dynamic> row = rows[i];
+
+  //         await _db!.insert('transactions', {
+  //           'id': row[0],
+  //           'percentage': row[1],
+  //           'saved': row[2],
+  //           'spend': row[3],
+  //           'date': row[4],
+  //           'prevTotalSpend': row[5],
+  //           'prevTotalSaved': row[6],
+  //         });
+  //       }
+  //       Fluttertoast.showToast(
+  //         msg: successMessage,
+  //         gravity: ToastGravity.CENTER,
+  //       );
+  //       syncDatabase();
+  //     }
+  //   } catch (e) {
+  //     Fluttertoast.showToast(
+  //       msg: failedMessage,
+  //     );
+  //   }
+  // }
+
+  void close() {
     _localDatabase.close();
   }
 }

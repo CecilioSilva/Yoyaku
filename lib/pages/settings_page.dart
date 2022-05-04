@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
+import 'package:yoyaku/classes/data_sync.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -46,6 +48,14 @@ class _SettingsPageState extends State<SettingsPage> {
               },
               child: const Text(
                 'Logout',
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                Provider.of<DataSync>(context, listen: false).saveDatabase();
+              },
+              child: const Text(
+                'Save database',
               ),
             ),
           ],
