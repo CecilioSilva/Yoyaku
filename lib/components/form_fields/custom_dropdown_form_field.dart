@@ -20,33 +20,41 @@ class CustomDropDownField extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.all(4.0),
-          child: DropdownButtonFormField<String>(
-            value: initalValue,
-            style: const TextStyle(
-              fontSize: 20,
+          child: Theme(
+            data: Theme.of(context).copyWith(
+              canvasColor: const Color.fromARGB(255, 23, 28, 55),
             ),
-            decoration: InputDecoration(
-              labelText: title,
-              labelStyle: const TextStyle(
-                color: Colors.orange,
+            child: DropdownButtonFormField<String>(
+              value: initalValue,
+              style: const TextStyle(
+                fontSize: 20,
               ),
-              enabledBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.redAccent),
+              decoration: InputDecoration(
+                labelText: title,
+                labelStyle: const TextStyle(
+                  color: Colors.orange,
+                ),
+                enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.redAccent),
+                ),
+                focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.redAccent),
+                ),
               ),
-              focusedBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.redAccent),
-              ),
+              hint: Text(title),
+              items: items
+                  .map((e) => DropdownMenuItem<String>(
+                        child: Text(
+                          e.name,
+                          style: const TextStyle(
+                            color: Colors.orange,
+                          ),
+                        ),
+                        value: e.value,
+                      ))
+                  .toList(),
+              onChanged: onChanged,
             ),
-            hint: Text(title),
-            items: items
-                .map((e) => DropdownMenuItem<String>(
-                      child: Text(
-                        e.name,
-                      ),
-                      value: e.value,
-                    ))
-                .toList(),
-            onChanged: onChanged,
           ),
         ),
       ],

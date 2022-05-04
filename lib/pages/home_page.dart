@@ -1,5 +1,6 @@
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:yoyaku/components/tabs/calendar_tab.dart';
+import 'package:yoyaku/components/tabs/category_tab.dart';
 import 'package:yoyaku/components/tabs/collection_tab.dart';
 import 'package:yoyaku/components/tabs/datatable_tab.dart';
 import 'package:yoyaku/components/tabs/gallery_tab.dart';
@@ -31,6 +32,7 @@ class _HomePageState extends State<HomePage> {
     [Tab(icon: Icon(Icons.image_outlined)), GalleryTab()],
     [Tab(icon: Icon(Icons.calendar_month)), MontlyTab()],
     [Tab(icon: Icon(Icons.collections_bookmark)), CollectionTab()],
+    [Tab(icon: Icon(Icons.category)), CategoryTab()],
     [Tab(icon: Icon(Icons.receipt_long)), TotalTab()],
     [Tab(icon: Icon(Icons.cancel_outlined)), CanceledTab()],
     [Tab(icon: Icon(Icons.select_all)), ItemsTab()],
