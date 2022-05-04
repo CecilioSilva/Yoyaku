@@ -60,11 +60,19 @@ class ItemGridCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CoverImage(size: size, data: data),
-                Text(
-                  data.title,
-                  style: TextStyle(
-                    fontSize: size.width * 0.05,
-                    fontWeight: FontWeight.bold,
+                FittedBox(
+                  child: SizedBox(
+                    width: size.width,
+                    child: Text(
+                      data.title,
+                      softWrap: true,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: size.width * 0.05,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
                 Padding(

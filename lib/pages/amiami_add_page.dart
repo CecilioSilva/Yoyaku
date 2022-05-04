@@ -1,8 +1,5 @@
 import 'dart:typed_data';
 import 'package:yoyaku/classes/data_sync.dart';
-import 'package:yoyaku/components/extras/custom_error.dart';
-import 'package:yoyaku/components/extras/loading.dart';
-import 'package:yoyaku/components/extras/non_found.dart';
 import 'package:yoyaku/components/form_fields/custom_checkbox_form_field.dart';
 import 'package:yoyaku/components/form_fields/custom_datepicker_form_field.dart';
 import 'package:yoyaku/components/form_fields/custom_dropdown_form_field.dart';
@@ -15,20 +12,18 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
-class UpdatePage extends StatefulWidget {
+class AmiAmiAddPage extends StatefulWidget {
   final Item item;
 
-  const UpdatePage({Key? key, required this.item}) : super(key: key);
+  const AmiAmiAddPage({Key? key, required this.item}) : super(key: key);
 
   @override
-  State<UpdatePage> createState() => _UpdatePageState();
+  State<AmiAmiAddPage> createState() => _AmiAmiAddPageState();
 }
 
-class _UpdatePageState extends State<UpdatePage> {
+class _AmiAmiAddPageState extends State<AmiAmiAddPage> {
   final _formKey = GlobalKey<FormState>();
 
-  int _id = 0;
-  String _uuid = '';
   String _title = '';
   int _type = 0;
   DateTime _dateBought = DateTime.now();
@@ -47,8 +42,6 @@ class _UpdatePageState extends State<UpdatePage> {
   void initState() {
     super.initState();
 
-    _id = widget.item.id;
-    _uuid = widget.item.uuid;
     _title = widget.item.title;
     _type = widget.item.type;
     _dateBought = widget.item.dateBought;
@@ -109,7 +102,7 @@ class _UpdatePageState extends State<UpdatePage> {
           statusBarColor: Colors.orange,
         ),
         backgroundColor: Colors.orange,
-        title: const Text('Update Item'),
+        title: const Text('Add AmiAmi Item'),
         centerTitle: true,
       ),
       body: Padding(
@@ -248,30 +241,26 @@ class _UpdatePageState extends State<UpdatePage> {
                             onPressed: () {
                               if (!validateForm()) return;
 
-                              dataSync.updateItem(
-                                Item(
-                                  id: _id,
-                                  uuid: _uuid,
-                                  type: _type,
-                                  title: _title,
-                                  dateBought: _dateBought,
-                                  releaseDate: _releaseDate,
-                                  currency: _currency,
-                                  price: _price,
-                                  shipping: _shipping,
-                                  image: _image!,
-                                  link: _link,
-                                  delivered: _delivered,
-                                  import: _import,
-                                  paid: _paid,
-                                  canceled: _canceled,
-                                ),
+                              dataSync.addItem(
+                                type: _type,
+                                title: _title,
+                                dateBought: _dateBought,
+                                releaseDate: _releaseDate,
+                                currency: _currency,
+                                price: _price,
+                                shipping: _shipping,
+                                image: _image!,
+                                link: _link,
+                                paid: _paid,
+                                delivered: _delivered,
+                                canceled: _canceled,
+                                import: _import,
                               );
 
                               Navigator.pop(context);
                             },
                             child: const Text(
-                              'Update item',
+                              'Add item',
                               style: TextStyle(
                                 fontSize: 18,
                               ),

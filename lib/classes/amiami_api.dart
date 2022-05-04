@@ -1,3 +1,8 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
+import 'package:http/http.dart' as http;
+
 class AmiAmiItem {
   final String productUrl;
   final String imageUrl;
@@ -5,6 +10,7 @@ class AmiAmiItem {
   final String price;
   final String productCode;
   final String availability;
+  final DateTime releaseDate;
   final AmiAmiFlags flags;
 
   AmiAmiItem(
@@ -14,6 +20,7 @@ class AmiAmiItem {
     this.price,
     this.productCode,
     this.availability,
+    this.releaseDate,
     this.flags,
   );
 }
@@ -32,6 +39,17 @@ class AmiAmiFlags {
     this.isBackorder,
     this.isPreowned,
   );
+
+  @override
+  String toString() {
+    return '''
+    inStock: $inStock 
+    isClosed: $isClosed 
+    isPreorder: $isPreorder 
+    isBackorder: $isBackorder 
+    isPreowned: $isPreowned
+  ''';
+  }
 }
 
 class AmiAmiProductInfo {
@@ -199,6 +217,8 @@ class AmiAmiProductInfo {
   }
 }
 
+int kPerPage = 30;
+
 class AmiAmiResultSet {
   List<AmiAmiItem> items = [];
   int maxItems = -1;
@@ -238,6 +258,100 @@ class AmiAmiResultSet {
       isPreowned,
     );
 
-    String availibility = "Unknown status?";
+    String availability = "Unknown status";
+
+    if (isClosed) {
+      if (isPreorder) {
+        availability = "Pre-order Closed";
+      } else if (isBackorder) {
+        availability = "Back-order Closed";
+      } else {
+        availability = "Order Closed";
+      }
+    } else if (isBackorder) {
+      availability = "Back-order";
+    } else {
+      if (isPreorder && inStock) {
+        availability = "Pre-order";
+      } else if (isPreowned && inStock) {
+        availability = "Pre-owned";
+      } else if (inStock) {
+        availability = "Available";
+      }
+    }
+
+    if (availability == "Unknown status") {
+      log('STATUS ERROR FOR ${productInfo.gname}: flags:${flags.toString()}, avail:$availability');
+    }
+
+    AmiAmiItem item = AmiAmiItem(
+      'https://www.amiami.com/eng/detail/?gcode=${productInfo.gcode}',
+      'https://img.amiami.com${productInfo.thumbUrl}',
+      productInfo.gname.toString(),
+      productInfo.cPriceTaxed.toString(),
+      productInfo.gcode.toString(),
+      availability,
+      DateTime.tryParse(productInfo.releasedate ?? DateTime.now().toString()) ??
+          DateTime.now(),
+      flags,
+    );
+
+    items.add(item);
+  }
+
+  bool parse(dynamic obj) {
+    if (!init) {
+      maxItems = obj['search_result']['total_results'];
+      pages = (maxItems / kPerPage).ceil();
+      init = true;
+    }
+    for (var data in obj['items']) {
+      AmiAmiProductInfo productInfo = AmiAmiProductInfo.fromJson(data);
+
+      add(productInfo);
+      _itemCount += 1;
+    }
+    return _itemCount == maxItems;
+  }
+}
+
+Future<Map> requestPage(Map<String, dynamic> data) async {
+  String keywords = data['s_keywords'];
+  int pagecnt = data['pagecnt'];
+  int pagemax = data['pagemax'];
+  final uri = Uri.http(
+    "178.62.252.206:5656",
+    "/search/$keywords/$pagemax/$pagecnt",
+  );
+  final response = await http
+      .get(
+        uri,
+      )
+      .timeout(
+        const Duration(seconds: 30),
+      );
+
+  final result = jsonDecode(response.body);
+  return result;
+}
+
+Future<AmiAmiResultSet?> searchAmiAmi(String keywords) async {
+  Map<String, dynamic> data = {
+    "s_keywords": keywords,
+    "pagecnt": 1,
+    "pagemax": kPerPage,
+    "lang": "eng",
+  };
+
+  AmiAmiResultSet rs = AmiAmiResultSet();
+
+  try {
+    while (!rs.parse(await requestPage(data))) {
+      data['pagecnt'] += 1;
+    }
+
+    return rs;
+  } on TimeoutException catch (e) {
+    return null;
   }
 }

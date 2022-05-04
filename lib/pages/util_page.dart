@@ -1,6 +1,7 @@
 import 'package:yoyaku/components/tabs/add_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:yoyaku/components/tabs/amiami_tab.dart';
 
 class UtilPage extends StatefulWidget {
   const UtilPage({Key? key}) : super(key: key);
@@ -13,7 +14,7 @@ class _UtilPageState extends State<UtilPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 1,
+      length: 2,
       child: Scaffold(
         backgroundColor: const Color(0xFF03071e),
         appBar: AppBar(
@@ -23,15 +24,22 @@ class _UtilPageState extends State<UtilPage> {
           backgroundColor: Colors.orange,
           title: const Text('AmiAmu'),
           centerTitle: true,
-          bottom: const TabBar(
+          bottom: TabBar(
             indicatorColor: Colors.red,
             tabs: [
-              Tab(icon: Icon(Icons.add)),
+              const Tab(icon: Icon(Icons.add)),
+              Tab(
+                  icon: Image.asset(
+                'assets/amiami.png',
+                width: 100,
+                height: 100,
+              )),
             ],
           ),
         ),
         body: const TabBarView(children: [
           AddTab(),
+          AmiAmiTab(),
         ]),
       ),
     );

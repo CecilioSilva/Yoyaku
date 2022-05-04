@@ -65,13 +65,19 @@ class ItemListCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            data.title,
-                            maxLines: 1,
-                            style: TextStyle(
-                              overflow: TextOverflow.ellipsis,
-                              fontSize: size.width * 0.06,
-                              fontWeight: FontWeight.bold,
+                          FittedBox(
+                            child: SizedBox(
+                              width: size.width * 0.6,
+                              child: Text(
+                                data.title,
+                                softWrap: true,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: size.width * 0.05,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
                           TypeTag(data.type),
@@ -170,7 +176,7 @@ class CoverImage extends StatelessWidget {
         tag: data.title,
         child: Container(
           width: size.width * 0.3,
-          height: size.width * 0.3,
+          height: size.width * 0.4,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
             image: DecorationImage(
