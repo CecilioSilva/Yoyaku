@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -32,7 +34,21 @@ class _SettingsPageState extends State<SettingsPage> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [],
+          children: [
+            ElevatedButton(
+              onPressed: () async {
+                final GoogleSignIn _googleSignIn = GoogleSignIn(
+                  scopes: ['email'],
+                );
+                await _googleSignIn.signOut();
+
+                Phoenix.rebirth(context);
+              },
+              child: const Text(
+                'Logout',
+              ),
+            ),
+          ],
         ),
       ),
     );

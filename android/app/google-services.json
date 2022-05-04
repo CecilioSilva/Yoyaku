@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "829791605841",
+    "project_id": "yoyaku-89b63",
+    "storage_bucket": "yoyaku-89b63.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:829791605841:android:341c23df979a5fc4b75470",
+        "android_client_info": {
+          "package_name": "me.ceciliosilva.yoyaku"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "829791605841-ehlhg650hr4htsehk9hb2n3r01j2mlnr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "me.ceciliosilva.yoyaku",
+            "certificate_hash": "55ec67207a140ab79e9d8451c87ea615fc2a1523"
+          }
+        },
+        {
+          "client_id": "829791605841-igm8nnujua368qme0hdtvht63999pre6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEg9zWDXX-OyQ5zsi3lSPT8Fcan6oHBkM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "829791605841-igm8nnujua368qme0hdtvht63999pre6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

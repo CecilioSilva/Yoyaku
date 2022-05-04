@@ -13,8 +13,10 @@ class DataSync extends ChangeNotifier {
   static final YoyakuDatabase _localDatabase = YoyakuDatabase();
   static Map? exchangeRates;
   List<Item> allItems = [];
+  final String _userId;
+  final String username;
 
-  DataSync() {
+  DataSync(this._userId, this.username) {
     syncDatabase();
   }
 
