@@ -49,11 +49,23 @@ class _CustomDatePickerFormFieldState extends State<CustomDatePickerFormField> {
             child: GestureDetector(
               onTap: () async {
                 _date = await showDatePicker(
-                      context: context,
-                      initialDate: _date,
-                      firstDate: DateTime(2010),
-                      lastDate: DateTime(2101),
-                    ) ??
+                        context: context,
+                        initialDate: _date,
+                        firstDate: DateTime(2010),
+                        lastDate: DateTime(2101),
+                        builder: (context, child) {
+                          return Theme(
+                            data: Theme.of(context).copyWith(
+                              colorScheme: const ColorScheme.light(
+                                primary: Colors.orange,
+                                onPrimary: Colors.red,
+                                onSurface: Colors.white,
+                              ),
+                              dialogBackgroundColor: const Color(0xFF03071e),
+                            ),
+                            child: child!,
+                          );
+                        }) ??
                     _date;
                 changed = true;
                 widget.onChanged(_date);
