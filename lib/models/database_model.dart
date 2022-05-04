@@ -40,8 +40,7 @@ class YoyakuDatabase extends _$YoyakuDatabase {
 
   Future<List<Item>> get allMontlyItems => (select(items)
         ..orderBy([
-          (u) =>
-              OrderingTerm(expression: u.releaseDate, mode: OrderingMode.desc)
+          (u) => OrderingTerm(expression: u.releaseDate, mode: OrderingMode.asc)
         ])
         ..where((tbl) => tbl.canceled.not()))
       .get();

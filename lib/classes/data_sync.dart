@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:uuid/uuid.dart';
+import 'package:yoyaku/services/get_within_same_month.dart';
 
 class DataSync extends ChangeNotifier {
   static final YoyakuDatabase _localDatabase = YoyakuDatabase();
@@ -47,7 +48,7 @@ class DataSync extends ChangeNotifier {
     return allItems
         .where(
           (element) =>
-              DateTime.now().difference(element.releaseDate).inDays < 31 &&
+              getDateInSameMonth(DateTime.now(), element.releaseDate) &&
               !element.delivered,
         )
         .toList();
@@ -58,7 +59,7 @@ class DataSync extends ChangeNotifier {
     return allItems
         .where(
           (element) =>
-              DateTime.now().difference(element.releaseDate).inDays < 31 &&
+              getDateInSameMonth(DateTime.now(), element.releaseDate) &&
               !element.paid,
         )
         .toList();
