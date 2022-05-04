@@ -205,7 +205,7 @@ class DataSync extends ChangeNotifier {
 
   Future<List<Item>> getItemsByDay(DateTime day) async {
     List<Item> items = [];
-    for (Item item in await _localDatabase.allItems) {
+    for (Item item in await _localDatabase.allUnCanceledItems) {
       if (isSameDay(item.releaseDate, day)) {
         items.add(item);
       }

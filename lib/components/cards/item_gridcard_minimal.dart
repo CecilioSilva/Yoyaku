@@ -5,6 +5,7 @@ import 'package:yoyaku/models/database_model.dart';
 import 'package:yoyaku/pages/item_page.dart';
 import 'package:yoyaku/pages/update_page.dart';
 import 'package:flutter/material.dart';
+import 'package:yoyaku/services/get_card_gradient.dart';
 
 class ItemGridMinimalCard extends StatelessWidget {
   final ItemData data;
@@ -38,17 +39,7 @@ class ItemGridMinimalCard extends StatelessWidget {
         },
         child: Container(
           decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [
-                Colors.orange,
-                Colors.orangeAccent,
-                Colors.red,
-                Colors.redAccent
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              stops: [0, 0.2, 0.5, 0.8],
-            ),
+            gradient: getCardGradient(data.canceled),
             borderRadius: BorderRadius.circular(
               15,
             ),

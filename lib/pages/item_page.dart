@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:yoyaku/classes/item_data.dart';
+import 'package:yoyaku/services/get_card_gradient.dart';
 
 class ItemPage extends StatelessWidget {
   final ItemData data;
@@ -91,17 +92,7 @@ class ItemPage extends StatelessWidget {
                   height: 60,
                   child: Container(
                     decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [
-                          Colors.orange,
-                          Colors.orangeAccent,
-                          Colors.red,
-                          Colors.redAccent
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        stops: [0, 0.2, 0.5, 0.8],
-                      ),
+                      gradient: getCardGradient(data.canceled),
                       borderRadius: BorderRadius.circular(
                         10,
                       ),
@@ -247,17 +238,7 @@ class ItemPage extends StatelessWidget {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [
-                            Colors.orange,
-                            Colors.orangeAccent,
-                            Colors.red,
-                            Colors.redAccent
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          stops: [0, 0.2, 0.5, 0.8],
-                        ),
+                        gradient: getCardGradient(data.canceled),
                         borderRadius: BorderRadius.circular(
                           10,
                         ),
