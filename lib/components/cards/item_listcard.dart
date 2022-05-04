@@ -173,7 +173,7 @@ class CoverImage extends StatelessWidget {
         right: 8,
       ),
       child: Hero(
-        tag: data.title,
+        tag: data.uuid,
         child: Container(
           width: size.width * 0.3,
           height: size.width * 0.4,

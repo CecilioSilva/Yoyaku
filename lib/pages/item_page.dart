@@ -44,7 +44,7 @@ class ItemPage extends StatelessWidget {
             child: Column(
               children: [
                 Hero(
-                  tag: data.title,
+                  tag: data.uuid,
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),

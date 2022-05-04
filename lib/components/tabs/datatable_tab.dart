@@ -139,7 +139,7 @@ class _DatatableTabState extends State<DatatableTab> {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) => Hero(
-                    tag: data.title,
+                    tag: data.uuid,
                     child: Center(
                       child: SizedBox(
                         child: ClipRRect(

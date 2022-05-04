@@ -60,7 +60,7 @@ class CoverImage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(0),
       child: Hero(
-        tag: data.title,
+        tag: data.uuid,
         child: Container(
           width: size.width * 0.7,
           height: size.width * 0.7,
