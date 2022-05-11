@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 
 part 'database_model.g.dart';
 
@@ -51,6 +51,13 @@ class YoyakuDatabase extends _$YoyakuDatabase {
   Future<List<Item>> get allDeliveredItems =>
       (select(items)..where((tbl) => tbl.delivered)).get();
 
+  Future<List<String?>> allItemUUIDs() async {
+    final query = await (selectOnly(items)..addColumns([items.uuid])).get();
+    List<String?> data =
+        query.map((TypedResult row) => row.read(items.uuid)).toList();
+    return data;
+  }
+
   Future<Item> itemByUuid(String uuid) {
     return (select(items)
           ..where((tbl) => tbl.uuid.equals(uuid))
@@ -76,13 +83,12 @@ class YoyakuDatabase extends _$YoyakuDatabase {
     return update(items).replace(entry);
   }
 
-
   //DELETE
-  void deleteItem(String uuid){
+  void deleteItem(String uuid) {
     (delete(items)..where((tbl) => tbl.uuid.equals(uuid))).go();
   }
-  
-  void deleteAllItems(){
+
+  void deleteAllItems() {
     (delete(items)).go();
   }
 }

@@ -1,10 +1,13 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:csv/csv.dart';
 import 'package:drift/drift.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_archive/flutter_archive.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -230,24 +233,25 @@ class DataSync extends ChangeNotifier {
     List<List> images = [];
 
     for (int i = allItems.length - 1; i > 0; i--) {
+      log('$i/${allItems.length}', name: 'Index');
       List<dynamic> row = [];
       Item currentItem = allItems[i];
 
-      row.add(currentItem.id);
-      row.add(currentItem.uuid);
-      row.add(currentItem.type);
-      row.add(currentItem.title);
-      row.add(currentItem.dateBought);
-      row.add(currentItem.releaseDate);
-      row.add(currentItem.currency);
-      row.add(currentItem.price);
-      row.add(currentItem.shipping);
+      row.add(currentItem.id); //0
+      row.add(currentItem.uuid); //1
+      row.add(currentItem.type); //2
+      row.add(currentItem.title); //3
+      row.add(currentItem.dateBought); //4
+      row.add(currentItem.releaseDate); //5
+      row.add(currentItem.currency); //6
+      row.add(currentItem.price); //7
+      row.add(currentItem.shipping); //8
       images.add([currentItem.uuid, currentItem.image]);
-      row.add(currentItem.link);
-      row.add(currentItem.delivered);
-      row.add(currentItem.import);
-      row.add(currentItem.paid);
-      row.add(currentItem.canceled);
+      row.add(currentItem.link); //9
+      row.add(currentItem.delivered); //10
+      row.add(currentItem.import); //11
+      row.add(currentItem.paid); //12
+      row.add(currentItem.canceled); //13
       rows.add(row);
     }
 
@@ -273,8 +277,7 @@ class DataSync extends ChangeNotifier {
         imageFiles.add(file);
       }
 
-      final dataFile =
-          File('$directory/backup_$formatted/yoyaku_data_$formatted.csv');
+      final dataFile = File('$directory/backup_$formatted/yoyaku_data.csv');
       dataFile.create(recursive: true);
       dataFile.writeAsStringSync(csv);
 
@@ -292,43 +295,106 @@ class DataSync extends ChangeNotifier {
     }
   }
 
-  // void importDatabase(String failedMessage, String successMessage) async {
-  //   FilePickerResult? result = await FilePicker.platform.pickFiles(
-  //     type: FileType.custom,
-  //     allowedExtensions: ['csv'],
-  //   );
+  Future<bool> importDatabase() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['zip'],
+    );
+    final _localPath = await getApplicationDocumentsDirectory();
+    final directory = _localPath.path;
+    Directory destinationDir = await Directory(
+      '$directory/import/temp',
+    ).create(
+      recursive: true,
+    );
 
-  //   try {
-  //     if (result != null) {
-  //       File file = File(result.files.single.path as String);
-  //       String text = await file.readAsString();
-  //       List<List<dynamic>> rows = const CsvToListConverter().convert(text);
+    final currentUuids = await _localDatabase.allItemUUIDs();
 
-  //       for (int i = 0; i < rows.length; i++) {
-  //         List<dynamic> row = rows[i];
+    if (result == null) {
+      log('No File selected', name: 'ImportDatabase');
+      Fluttertoast.showToast(
+          msg: 'No file selected',
+          backgroundColor: Colors.red,
+          textColor: Colors.white);
+      return false;
+    }
 
-  //         await _db!.insert('transactions', {
-  //           'id': row[0],
-  //           'percentage': row[1],
-  //           'saved': row[2],
-  //           'spend': row[3],
-  //           'date': row[4],
-  //           'prevTotalSpend': row[5],
-  //           'prevTotalSaved': row[6],
-  //         });
-  //       }
-  //       Fluttertoast.showToast(
-  //         msg: successMessage,
-  //         gravity: ToastGravity.CENTER,
-  //       );
-  //       syncDatabase();
-  //     }
-  //   } catch (e) {
-  //     Fluttertoast.showToast(
-  //       msg: failedMessage,
-  //     );
-  //   }
-  // }
+    try {
+      File zipFile = File(result.files.single.path as String);
+
+      await ZipFile.extractToDirectory(
+        zipFile: zipFile,
+        destinationDir: destinationDir,
+      );
+    } on Exception {
+      log('Failed Archive extracting', name: 'ImportDatabase');
+      Fluttertoast.showToast(
+        msg: 'Failed extracting archive',
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return false;
+    }
+
+    try {
+      String imagesPath = '$directory/import/temp/images';
+      String dataPath = '$directory/import/temp/yoyaku_data.csv';
+
+      File data = File(dataPath);
+      String dataText = await data.readAsString();
+      List<List<dynamic>> rows = const CsvToListConverter().convert(dataText);
+
+      for (int i = 0; i < rows.length; i++) {
+        List<dynamic> row = rows[i];
+
+        if (!currentUuids.contains(row[1])) {
+          File image = File('$imagesPath/${row[1]}.jpg');
+          Uint8List imageBytes = await image.readAsBytes();
+
+          await _localDatabase.addItem(
+            ItemsCompanion(
+              type: Value(row[2]),
+              title: Value(row[3]),
+              dateBought: Value(DateTime.parse(row[4])),
+              releaseDate: Value(DateTime.parse(row[5])),
+              currency: Value(row[6]),
+              price: Value(row[7]),
+              shipping: Value(row[8]),
+              image: Value(imageBytes),
+              link: Value(row[9]),
+              paid: Value(row[12] == 'true'),
+              delivered: Value(row[10] == 'true'),
+              canceled: Value(row[13] == 'true'),
+              import: Value(row[11] == 'true'),
+              uuid: Value(row[1]),
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      log('Failed Data parsing', name: 'ImportDatabase');
+      print(Directory('$directory/import/temp').listSync());
+      print(e);
+      Fluttertoast.showToast(
+        msg: 'Failed Getting data',
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return false;
+    } finally {
+      await destinationDir.delete(recursive: true);
+    }
+
+    Fluttertoast.showToast(
+      msg: 'Added items successfully',
+      backgroundColor: Colors.green,
+      textColor: Colors.white,
+      gravity: ToastGravity.CENTER,
+    );
+
+    syncDatabase();
+    return true;
+  }
 
   void close() {
     _localDatabase.close();

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:yoyaku/classes/data_sync.dart';
+import 'package:yoyaku/components/extras/confirm_dialog.dar.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -60,10 +62,35 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             ElevatedButton(
               onPressed: () async {
-                Provider.of<DataSync>(context, listen: false).dropDatabase();
+                showDialog(
+                  context: context,
+                  builder: (context) => ConfirmationDialog(
+                    name: 'Data Deletion',
+                    description: 'Are you sure you want to delete all data',
+                    onConfirm: () {
+                      Provider.of<DataSync>(context, listen: false)
+                          .dropDatabase();
+
+                      Fluttertoast.showToast(
+                        msg: 'Deleted all data',
+                        gravity: ToastGravity.CENTER,
+                      );
+                    },
+                    confirmText: 'Delete data',
+                    cancelText: 'Cancel',
+                  ),
+                );
               },
               child: const Text(
                 'Drop database',
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                Provider.of<DataSync>(context, listen: false).importDatabase();
+              },
+              child: const Text(
+                'Import Database',
               ),
             ),
           ],
