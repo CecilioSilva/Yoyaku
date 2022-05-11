@@ -75,6 +75,16 @@ class YoyakuDatabase extends _$YoyakuDatabase {
   Future updateItem(Item entry) {
     return update(items).replace(entry);
   }
+
+
+  //DELETE
+  void deleteItem(String uuid){
+    (delete(items)..where((tbl) => tbl.uuid.equals(uuid))).go();
+  }
+  
+  void deleteAllItems(){
+    (delete(items)).go();
+  }
 }
 
 LazyDatabase _openConnection() {

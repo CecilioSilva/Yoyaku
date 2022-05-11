@@ -351,7 +351,7 @@ Future<AmiAmiResultSet?> searchAmiAmi(String keywords) async {
     }
 
     return rs;
-  } on TimeoutException catch (e) {
+  } on TimeoutException {
     return null;
   }
 }

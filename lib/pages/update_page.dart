@@ -1,5 +1,11 @@
 import 'dart:typed_data';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:yoyaku/classes/data_sync.dart';
+import 'package:yoyaku/components/extras/confirm_dialog.dar.dart';
 import 'package:yoyaku/components/form_fields/custom_checkbox_form_field.dart';
 import 'package:yoyaku/components/form_fields/custom_datepicker_form_field.dart';
 import 'package:yoyaku/components/form_fields/custom_dropdown_form_field.dart';
@@ -7,10 +13,6 @@ import 'package:yoyaku/components/form_fields/custom_imagepicker_form_field.dart
 import 'package:yoyaku/components/form_fields/custom_number_form_field.dart';
 import 'package:yoyaku/components/form_fields/custom_text_form_field.dart';
 import 'package:yoyaku/models/database_model.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
 
 class UpdatePage extends StatefulWidget {
   final Item item;
@@ -108,6 +110,29 @@ class _UpdatePageState extends State<UpdatePage> {
         backgroundColor: Colors.orange,
         title: const Text('Update Item'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => ConfirmationDialog(
+                  name: 'Delete Item',
+                  description: 'Are you sure you want to delete this item',
+                  onConfirm: () {
+                    dataSync.deleteItem(_uuid);
+                    Navigator.of(context).pop();
+                  },
+                  confirmText: 'Delete',
+                  cancelText: 'Cancel',
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.delete,
+              color: Colors.red,
+            ),
+          )
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -139,24 +164,27 @@ class _UpdatePageState extends State<UpdatePage> {
                           _type = int.parse(value!);
                         },
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomDatePickerFormField(
-                            initialValue: _dateBought,
-                            title: 'Date Bought',
-                            onChanged: (DateTime date) {
-                              _dateBought = date;
-                            },
-                          ),
-                          CustomDatePickerFormField(
-                            initialValue: _releaseDate,
-                            title: 'Release Date',
-                            onChanged: (DateTime date) {
-                              _releaseDate = date;
-                            },
-                          ),
-                        ],
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomDatePickerFormField(
+                              initialValue: _dateBought,
+                              title: 'Date Bought',
+                              onChanged: (DateTime date) {
+                                _dateBought = date;
+                              },
+                            ),
+                            CustomDatePickerFormField(
+                              initialValue: _releaseDate,
+                              title: 'Release Date',
+                              onChanged: (DateTime date) {
+                                _releaseDate = date;
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                       CustomDropDownField(
                         title: 'Currency',

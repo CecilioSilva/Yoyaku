@@ -58,6 +58,14 @@ class _SettingsPageState extends State<SettingsPage> {
                 'Save database',
               ),
             ),
+            ElevatedButton(
+              onPressed: () async {
+                Provider.of<DataSync>(context, listen: false).dropDatabase();
+              },
+              child: const Text(
+                'Drop database',
+              ),
+            ),
           ],
         ),
       ),

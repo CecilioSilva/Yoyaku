@@ -1,19 +1,19 @@
 import 'dart:io';
 
 import 'package:csv/csv.dart';
+import 'package:drift/drift.dart';
 import 'package:file_saver/file_saver.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_archive/flutter_archive.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:uuid/uuid.dart';
 import 'package:yoyaku/classes/item_data.dart';
 import 'package:yoyaku/classes/total_data.dart';
 import 'package:yoyaku/models/database_model.dart';
 import 'package:yoyaku/services/check_connection.dart';
-import 'package:drift/drift.dart';
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:table_calendar/table_calendar.dart';
-import 'package:uuid/uuid.dart';
 import 'package:yoyaku/services/get_within_same_month.dart';
 
 class DataSync extends ChangeNotifier {
@@ -167,7 +167,7 @@ class DataSync extends ChangeNotifier {
 
   void updateItem(Item entry) {
     _localDatabase.updateItem(entry);
-    notifyListeners();
+    syncDatabase();
   }
 
   void addItem({
@@ -203,7 +203,7 @@ class DataSync extends ChangeNotifier {
         uuid: Value(const Uuid().v1()),
       ),
     );
-    notifyListeners();
+    syncDatabase();
   }
 
   Future<Item> getItemById(String uuid) async {
@@ -231,24 +231,23 @@ class DataSync extends ChangeNotifier {
 
     for (int i = allItems.length - 1; i > 0; i--) {
       List<dynamic> row = [];
+      Item currentItem = allItems[i];
 
-      images.add([allItems[i].uuid, allItems[i].image]);
-
-      row.add(allItems[i].id);
-      row.add(allItems[i].uuid);
-      row.add(allItems[i].type);
-      row.add(allItems[i].title);
-      row.add(allItems[i].dateBought);
-      row.add(allItems[i].releaseDate);
-      row.add(allItems[i].currency);
-      row.add(allItems[i].price);
-      row.add(allItems[i].shipping);
-      // row.add(allItems[i].image);
-      row.add(allItems[i].link);
-      row.add(allItems[i].delivered);
-      row.add(allItems[i].import);
-      row.add(allItems[i].paid);
-      row.add(allItems[i].canceled);
+      row.add(currentItem.id);
+      row.add(currentItem.uuid);
+      row.add(currentItem.type);
+      row.add(currentItem.title);
+      row.add(currentItem.dateBought);
+      row.add(currentItem.releaseDate);
+      row.add(currentItem.currency);
+      row.add(currentItem.price);
+      row.add(currentItem.shipping);
+      images.add([currentItem.uuid, currentItem.image]);
+      row.add(currentItem.link);
+      row.add(currentItem.delivered);
+      row.add(currentItem.import);
+      row.add(currentItem.paid);
+      row.add(currentItem.canceled);
       rows.add(row);
     }
 
@@ -264,15 +263,18 @@ class DataSync extends ChangeNotifier {
 
       List<File> imageFiles = [];
 
-      await Directory('$directory/backup_$formatted/images').create(recursive: true);
+      await Directory('$directory/backup_$formatted/images')
+          .create(recursive: true);
       for (List image in images) {
-        final file = File('$directory/backup_$formatted/images/${image[0]}.jpg');
+        final file =
+            File('$directory/backup_$formatted/images/${image[0]}.jpg');
         file.create(recursive: true);
         file.writeAsBytesSync(image[1]);
         imageFiles.add(file);
       }
 
-      final dataFile = File('$directory/backup_$formatted/yoyaku_data_$formatted.csv');
+      final dataFile =
+          File('$directory/backup_$formatted/yoyaku_data_$formatted.csv');
       dataFile.create(recursive: true);
       dataFile.writeAsStringSync(csv);
 
@@ -284,8 +286,9 @@ class DataSync extends ChangeNotifier {
         recurseSubDirs: true,
       );
 
-        Uint8List data = await zipFile.readAsBytes();
-        await FileSaver.instance.saveAs('yoyaku_backup_$formatted', data, 'zip', MimeType.ZIP);
+      Uint8List data = await zipFile.readAsBytes();
+      await FileSaver.instance
+          .saveAs('yoyaku_backup_$formatted', data, 'zip', MimeType.ZIP);
     }
   }
 
@@ -329,6 +332,16 @@ class DataSync extends ChangeNotifier {
 
   void close() {
     _localDatabase.close();
+  }
+
+  void deleteItem(String uuid) {
+    _localDatabase.deleteItem(uuid);
+    syncDatabase();
+  }
+
+  void dropDatabase() {
+    _localDatabase.deleteAllItems();
+    syncDatabase();
   }
 }
 

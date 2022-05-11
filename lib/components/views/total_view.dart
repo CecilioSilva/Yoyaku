@@ -47,7 +47,7 @@ class TotalView extends StatelessWidget {
                     children: [
                       Expanded(
                           child: Row(children: [
-                        CustomCard(
+                        customCard(
                           'Total Spend',
                           '€ ${snapshot.data!.totalSpend.toStringAsFixed(2)}',
                           context,
@@ -56,12 +56,12 @@ class TotalView extends StatelessWidget {
                       Expanded(
                           child: Row(
                         children: [
-                          CustomCard(
+                          customCard(
                             'Total Debt',
                             '€ ${snapshot.data!.totalDebt.toStringAsFixed(2)}',
                             context,
                           ),
-                          CustomCard(
+                          customCard(
                             'Total Collection',
                             '€ ${snapshot.data!.totalCollection.toStringAsFixed(2)}',
                             context,
@@ -71,15 +71,15 @@ class TotalView extends StatelessWidget {
                       Expanded(
                         child: Row(
                           children: [
-                            CustomCard(
+                            customCard(
                                 'Total Price',
                                 '€ ${snapshot.data!.totalPrice.toStringAsFixed(2)}',
                                 context),
-                            CustomCard(
+                            customCard(
                                 'Total Shipping',
                                 '€ ${snapshot.data!.totalShipping.toStringAsFixed(2)}',
                                 context),
-                            CustomCard(
+                            customCard(
                                 'Total Vat',
                                 '€ ${snapshot.data!.totalVat.toStringAsFixed(2)}',
                                 context),
@@ -89,12 +89,12 @@ class TotalView extends StatelessWidget {
                       Expanded(
                         child: Row(
                           children: [
-                            CustomCard(
+                            customCard(
                               'Total Orders',
                               '${snapshot.data!.totalOrders}',
                               context,
                             ),
-                            CustomCard(
+                            customCard(
                               'Import Amount',
                               '${snapshot.data!.importAmount}',
                               context,
@@ -105,22 +105,22 @@ class TotalView extends StatelessWidget {
                       Expanded(
                         child: Row(
                           children: [
-                            CustomCard(
+                            customCard(
                               'Figures',
                               '${snapshot.data!.figureAmount}',
                               context,
                             ),
-                            CustomCard(
+                            customCard(
                               'Manga',
                               '${snapshot.data!.mangaAmount}',
                               context,
                             ),
-                            CustomCard(
+                            customCard(
                               'Games',
                               '${snapshot.data!.gameAmount}',
                               context,
                             ),
-                            CustomCard(
+                            customCard(
                               'Other',
                               '${snapshot.data!.otherAmount}',
                               context,
@@ -147,7 +147,7 @@ class TotalView extends StatelessWidget {
     );
   }
 
-  Widget CustomCard(String title, String value, context) {
+  Widget customCard(String title, String value, context) {
     var size = MediaQuery.of(context).size;
     return Expanded(
       child: Padding(
@@ -177,7 +177,7 @@ class TotalView extends StatelessWidget {
                   child: Text(
                     value,
                     style: TextStyle(
-                      color: Color.fromARGB(255, 5, 12, 49),
+                      color: const Color.fromARGB(255, 5, 12, 49),
                       fontSize: size.width * 0.08,
                       fontWeight: FontWeight.bold,
                     ),

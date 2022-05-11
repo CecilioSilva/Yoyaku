@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -36,7 +37,12 @@ class ItemPage extends StatelessWidget {
             statusBarColor: Colors.orange,
           ),
           backgroundColor: Colors.orange,
-          title: FittedBox(child: Text(data.title)),
+          title: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Text(
+              data.title,
+            ),
+          ),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -144,84 +150,87 @@ class ItemPage extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                SizedBox(
-                  height: 110,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Column(
-                          children: [
-                            const Text(
-                              'Date Bought',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.orangeAccent,
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 13.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4),
-                                  border: Border.all(
-                                    color: Colors.orange,
-                                    width: 2,
-                                  ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: SizedBox(
+                    height: 110,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Column(
+                            children: [
+                              const Text(
+                                'Date Bought',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.orangeAccent,
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(14.0),
-                                  child: Text(
-                                    data.dateBought,
-                                    style: const TextStyle(
-                                      fontSize: 20,
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 13.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                    border: Border.all(
+                                      color: Colors.orange,
+                                      width: 2,
+                                    ),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(14.0),
+                                    child: Text(
+                                      data.dateBought,
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Column(
-                          children: [
-                            const Text(
-                              'Release Date',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.orangeAccent,
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 13.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4),
-                                  border: Border.all(
-                                    color: Colors.orange,
-                                    width: 2,
-                                  ),
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Column(
+                            children: [
+                              const Text(
+                                'Release Date',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.orangeAccent,
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(14.0),
-                                  child: Text(
-                                    data.releaseDate,
-                                    style: const TextStyle(
-                                      fontSize: 20,
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 13.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                    border: Border.all(
+                                      color: Colors.orange,
+                                      width: 2,
+                                    ),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(14.0),
+                                    child: Text(
+                                      data.releaseDate,
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(

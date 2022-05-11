@@ -1,9 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:yoyaku/components/extras/icon_toggle.dart';
 import 'package:yoyaku/components/views/gallery_view.dart';
 import 'package:yoyaku/components/views/grid_view.dart';
 import 'package:yoyaku/components/views/list_view.dart';
 import 'package:yoyaku/models/database_model.dart';
-import 'package:flutter/material.dart';
 
 enum ViewType {
   list,
@@ -70,58 +70,63 @@ class _ItemViewState extends State<ItemView> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Row(
-            children: [
-              Visibility(
-                visible: widget.title != '',
-                child: Text(
-                  widget.title,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: size.width * 0.04,
+    return RefreshIndicator(
+      onRefresh: () async {
+        setState(() {});
+      },
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
+              children: [
+                Visibility(
+                  visible: widget.title != '',
+                  child: Text(
+                    widget.title,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: size.width * 0.04,
+                    ),
                   ),
                 ),
-              ),
-              const Spacer(),
-              Row(
-                children: [
-                  Visibility(
-                    visible: widget.canChange && !isGallery,
-                    child: IconToggle(
-                      value: isList,
-                      onPressed: (bool newValue) => setState(
-                        () => isList = newValue,
+                const Spacer(),
+                Row(
+                  children: [
+                    Visibility(
+                      visible: widget.canChange && !isGallery,
+                      child: IconToggle(
+                        value: isList,
+                        onPressed: (bool newValue) => setState(
+                          () => isList = newValue,
+                        ),
+                        trueIcon: Icons.apps,
+                        falseIcon: Icons.list,
                       ),
-                      trueIcon: Icons.apps,
-                      falseIcon: Icons.list,
                     ),
-                  ),
-                  Visibility(
-                    visible: widget.canOrder,
-                    child: IconToggle(
-                      value: isReversed,
-                      onPressed: (bool newValue) => setState(
-                        () => isReversed = newValue,
+                    Visibility(
+                      visible: widget.canOrder,
+                      child: IconToggle(
+                        value: isReversed,
+                        onPressed: (bool newValue) => setState(
+                          () => isReversed = newValue,
+                        ),
+                        trueIcon: Icons.sort_by_alpha,
+                        falseIcon: Icons.sort_by_alpha,
+                        falseColor: Colors.orange,
                       ),
-                      trueIcon: Icons.sort_by_alpha,
-                      falseIcon: Icons.sort_by_alpha,
-                      falseColor: Colors.orange,
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-        Expanded(
-          child: getViewType(),
-        ),
-      ],
+          Expanded(
+            child: getViewType(),
+          ),
+        ],
+      ),
     );
   }
 }

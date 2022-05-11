@@ -101,22 +101,25 @@ class _AddTabState extends State<AddTab> {
                         _type = int.parse(value!);
                       },
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomDatePickerFormField(
-                          title: 'Date Bought',
-                          onChanged: (DateTime date) {
-                            _dateBought = date;
-                          },
-                        ),
-                        CustomDatePickerFormField(
-                          title: 'Release Date',
-                          onChanged: (DateTime date) {
-                            _releaseDate = date;
-                          },
-                        ),
-                      ],
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomDatePickerFormField(
+                            title: 'Date Bought',
+                            onChanged: (DateTime date) {
+                              _dateBought = date;
+                            },
+                          ),
+                          CustomDatePickerFormField(
+                            title: 'Release Date',
+                            onChanged: (DateTime date) {
+                              _releaseDate = date;
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                     CustomDropDownField(
                       title: 'Currency',
