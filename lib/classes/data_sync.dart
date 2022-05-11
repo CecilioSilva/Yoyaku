@@ -1,11 +1,8 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:csv/csv.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter_archive/flutter_archive.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:yoyaku/classes/item_data.dart';
@@ -267,28 +264,28 @@ class DataSync extends ChangeNotifier {
 
       List<File> imageFiles = [];
 
+      await Directory('$directory/backup_$formatted/images').create(recursive: true);
       for (List image in images) {
-        final file = File('$directory/backup/images/${image[0]}.jpg');
+        final file = File('$directory/backup_$formatted/images/${image[0]}.jpg');
         file.create(recursive: true);
         file.writeAsBytesSync(image[1]);
         imageFiles.add(file);
       }
 
-      final dataFile = File('$directory/backup/yoyaku_data_$formatted.csv');
+      final dataFile = File('$directory/backup_$formatted/yoyaku_data_$formatted.csv');
       dataFile.create(recursive: true);
       dataFile.writeAsStringSync(csv);
 
-      final dataDir = Directory('$directory/backup/');
-      try {
-        final zipFile = File('$directory/backup.zip');
-        ZipFile.createFromDirectory(
-          sourceDir: dataDir,
-          zipFile: zipFile,
-          recurseSubDirs: true,
-        );
-      } catch (e) {
-        print(e);
-      }
+      final dataDir = Directory('$directory/backup_$formatted/');
+      final zipFile = File('$directory/backup_$formatted.zip');
+      await ZipFile.createFromDirectory(
+        sourceDir: dataDir,
+        zipFile: zipFile,
+        recurseSubDirs: true,
+      );
+
+        Uint8List data = await zipFile.readAsBytes();
+        await FileSaver.instance.saveAs('yoyaku_backup_$formatted', data, 'zip', MimeType.ZIP);
     }
   }
 

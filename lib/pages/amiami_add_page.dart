@@ -135,24 +135,27 @@ class _AmiAmiAddPageState extends State<AmiAmiAddPage> {
                           _type = int.parse(value!);
                         },
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomDatePickerFormField(
-                            initialValue: _dateBought,
-                            title: 'Date Bought',
-                            onChanged: (DateTime date) {
-                              _dateBought = date;
-                            },
-                          ),
-                          CustomDatePickerFormField(
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomDatePickerFormField(
+                              initialValue: _dateBought,
+                              title: 'Date Bought',
+                              onChanged: (DateTime date) {
+                                _dateBought = date;
+                              },
+                            ),
+                            CustomDatePickerFormField(
                             initialValue: _releaseDate,
                             title: 'Release Date',
                             onChanged: (DateTime date) {
                               _releaseDate = date;
                             },
-                          ),
-                        ],
+                            ),
+                          ],
+                        ),
                       ),
                       CustomDropDownField(
                         title: 'Currency',
