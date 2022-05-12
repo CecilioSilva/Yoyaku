@@ -1,9 +1,9 @@
-import 'package:yoyaku/classes/data_sync.dart';
-import 'package:yoyaku/pages/home_page.dart';
-import 'package:yoyaku/services/get_exchange_rate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:yoyaku/classes/data_sync.dart';
+import 'package:yoyaku/pages/home_page.dart';
+import 'package:yoyaku/services/get_exchange_rate.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,9 +23,14 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

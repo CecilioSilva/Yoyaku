@@ -1,11 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:yoyaku/classes/data_sync.dart';
 import 'package:yoyaku/components/extras/confirm_dialog.dar.dart';
+import 'package:yoyaku/components/extras/custom_button.dar.dart';
+import 'package:yoyaku/services/notification_api.dart';
 import 'package:yoyaku/services/yoyaku_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -44,39 +47,42 @@ class _SettingsPageState extends State<SettingsPage> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            ElevatedButton(
-              onPressed: () async {
-                final GoogleSignIn _googleSignIn = GoogleSignIn(
-                  scopes: ['email'],
-                );
-                await _googleSignIn.signOut();
-
-                Phoenix.rebirth(context);
-              },
-              child: const Text(
-                'Logout',
-              ),
-            ),
-            ElevatedButton(
+            const Spacer(),
+            YoyakuButton(
+              color: Colors.orange,
               onPressed: () async {
                 Provider.of<DataSync>(context, listen: false).saveDatabase();
               },
-              child: const Text(
-                'Save database',
-              ),
+              text: 'Export database',
             ),
-            ElevatedButton(
+            YoyakuButton(
+              onPressed: () async {
+                Provider.of<DataSync>(context, listen: false).importDatabase();
+              },
+              color: Colors.orange,
+              text: 'Import Database',
+            ),
+            YoyakuButton(
               onPressed: () async {
                 showDialog(
                   context: context,
                   builder: (context) => ConfirmationDialog(
                     name: 'Data Deletion',
                     description: 'Are you sure you want to delete all data',
-                    onConfirm: () {
+                    onConfirm: () async {
                       Provider.of<DataSync>(context, listen: false)
                           .dropDatabase();
+
+                      NotificationApi.cancelAll();
+
+                      final _localPath =
+                          await getApplicationDocumentsDirectory();
+                      final directory = _localPath.path;
+                      Directory('$directory/notification/images').delete(
+                        recursive: true,
+                      );
 
                       Fluttertoast.showToast(
                         msg: 'Deleted all data',
@@ -88,17 +94,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 );
               },
-              child: const Text(
-                'Drop database',
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                Provider.of<DataSync>(context, listen: false).importDatabase();
-              },
-              child: const Text(
-                'Import Database',
-              ),
+              color: Colors.red,
+              text: 'Clear Data',
             ),
           ],
         ),

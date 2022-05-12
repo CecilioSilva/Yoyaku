@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:provider/provider.dart';
 import 'package:yoyaku/classes/yoyaku_tab.dart';
 import 'package:yoyaku/components/extras/custom_speed_dial_child.dart';
 import 'package:yoyaku/components/tabs/all_tab.dart';
@@ -18,6 +19,12 @@ import 'package:yoyaku/components/tabs/upcomming_payments.dart';
 import 'package:yoyaku/pages/calculator_page.dart';
 import 'package:yoyaku/pages/settings_page.dart';
 import 'package:yoyaku/pages/util_page.dart';
+
+import '../classes/data_sync.dart';
+import '../classes/item_data.dart';
+import '../services/get_exchange_rate.dart';
+import '../services/notification_api.dart';
+import 'item_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -41,6 +48,32 @@ class _HomePageState extends State<HomePage> {
     YoyakuTab(Icons.select_all, const ItemsTab()),
     YoyakuTab(Icons.data_object_rounded, const DatatableTab()),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+
+    NotificationApi.init();
+    listenNotifications();
+  }
+
+  void listenNotifications() =>
+      NotificationApi.onNotifications.stream.listen(onClickedNotification);
+
+  void onClickedNotification(String? payload) async {
+    if (payload != null && payload.isNotEmpty) {
+      final data = await Provider.of<DataSync>(context, listen: false)
+          .getItemById(payload);
+
+      final rates = await getExchange();
+
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: ((context) => ItemPage(data: ItemData(data, rates))),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

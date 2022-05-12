@@ -16,7 +16,7 @@ import 'package:uuid/uuid.dart';
 import 'package:yoyaku/classes/item_data.dart';
 import 'package:yoyaku/classes/total_data.dart';
 import 'package:yoyaku/models/database_model.dart';
-import 'package:yoyaku/services/check_connection.dart';
+import 'package:yoyaku/services/add_item_notification.dart';
 import 'package:yoyaku/services/get_within_same_month.dart';
 
 class DataSync extends ChangeNotifier {
@@ -29,9 +29,6 @@ class DataSync extends ChangeNotifier {
   }
 
   void syncDatabase() async {
-    bool isConnected = await checkConnection();
-    if (!isConnected) return;
-
     // Sync local to server;
     notifyListeners();
   }
@@ -187,7 +184,10 @@ class DataSync extends ChangeNotifier {
     required bool delivered,
     required bool canceled,
     required bool import,
+    String? uuid,
   }) async {
+    uuid ??= const Uuid().v1();
+
     await _localDatabase.addItem(
       ItemsCompanion(
         type: Value(type),
@@ -203,14 +203,26 @@ class DataSync extends ChangeNotifier {
         delivered: Value(delivered),
         canceled: Value(canceled),
         import: Value(import),
-        uuid: Value(const Uuid().v1()),
+        uuid: Value(uuid),
       ),
     );
+
+    Item item = await getItemById(uuid);
+    try {
+      addItemNotification(item);
+    } on Exception {
+      log('Didn\'t add notification for ${item.uuid}');
+    }
     syncDatabase();
   }
 
   Future<Item> getItemById(String uuid) async {
     return await _localDatabase.itemByUuid(uuid);
+  }
+
+  Future<ItemData> getItemDataById(String uuid) async {
+    Item item = await getItemById(uuid);
+    return ItemData(item, exchangeRates);
   }
 
   Future<List<Item>> getItemsByDay(DateTime day) async {
@@ -351,23 +363,21 @@ class DataSync extends ChangeNotifier {
           File image = File('$imagesPath/${row[1]}.jpg');
           Uint8List imageBytes = await image.readAsBytes();
 
-          await _localDatabase.addItem(
-            ItemsCompanion(
-              type: Value(row[2]),
-              title: Value(row[3]),
-              dateBought: Value(DateTime.parse(row[4])),
-              releaseDate: Value(DateTime.parse(row[5])),
-              currency: Value(row[6]),
-              price: Value(row[7]),
-              shipping: Value(row[8]),
-              image: Value(imageBytes),
-              link: Value(row[9]),
-              paid: Value(row[12] == 'true'),
-              delivered: Value(row[10] == 'true'),
-              canceled: Value(row[13] == 'true'),
-              import: Value(row[11] == 'true'),
-              uuid: Value(row[1]),
-            ),
+          addItem(
+            type: row[2],
+            title: row[3],
+            dateBought: DateTime.parse(row[4]),
+            releaseDate: DateTime.parse(row[5]),
+            currency: row[6],
+            price: row[7],
+            shipping: row[8],
+            image: imageBytes,
+            link: row[9],
+            paid: row[12] == 'true',
+            delivered: row[10] == 'true',
+            canceled: row[13] == 'true',
+            import: row[11] == 'true',
+            uuid: row[1],
           );
         } else {
           log('item already exists -> ${row[3]}', name: 'ImportDatabase');

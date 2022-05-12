@@ -14,6 +14,8 @@ import 'package:yoyaku/components/form_fields/custom_number_form_field.dart';
 import 'package:yoyaku/components/form_fields/custom_text_form_field.dart';
 import 'package:yoyaku/models/database_model.dart';
 
+import '../services/notification_api.dart';
+
 class UpdatePage extends StatefulWidget {
   final Item item;
 
@@ -120,6 +122,7 @@ class _UpdatePageState extends State<UpdatePage> {
                   description: 'Are you sure you want to delete this item',
                   onConfirm: () {
                     dataSync.deleteItem(_uuid);
+                    NotificationApi.cancel(_id);
                     Navigator.of(context).pop();
                   },
                   confirmText: 'Delete',

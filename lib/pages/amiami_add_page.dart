@@ -1,5 +1,11 @@
 import 'dart:typed_data';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:yoyaku/classes/data_sync.dart';
+import 'package:yoyaku/components/extras/custom_button.dar.dart';
 import 'package:yoyaku/components/form_fields/custom_checkbox_form_field.dart';
 import 'package:yoyaku/components/form_fields/custom_datepicker_form_field.dart';
 import 'package:yoyaku/components/form_fields/custom_dropdown_form_field.dart';
@@ -7,10 +13,6 @@ import 'package:yoyaku/components/form_fields/custom_imagepicker_form_field.dart
 import 'package:yoyaku/components/form_fields/custom_number_form_field.dart';
 import 'package:yoyaku/components/form_fields/custom_text_form_field.dart';
 import 'package:yoyaku/models/database_model.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
 
 class AmiAmiAddPage extends StatefulWidget {
   final Item item;
@@ -148,11 +150,11 @@ class _AmiAmiAddPageState extends State<AmiAmiAddPage> {
                               },
                             ),
                             CustomDatePickerFormField(
-                            initialValue: _releaseDate,
-                            title: 'Release Date',
-                            onChanged: (DateTime date) {
-                              _releaseDate = date;
-                            },
+                              initialValue: _releaseDate,
+                              title: 'Release Date',
+                              onChanged: (DateTime date) {
+                                _releaseDate = date;
+                              },
                             ),
                           ],
                         ),
@@ -226,50 +228,29 @@ class _AmiAmiAddPageState extends State<AmiAmiAddPage> {
                         },
                         initalValue: _import,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 4,
-                          right: 4,
-                          top: 4,
-                          bottom: 30.0,
-                        ),
-                        child: SizedBox(
-                          width: size.width,
-                          height: size.width * 0.15,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.red),
-                            ),
-                            onPressed: () {
-                              if (!validateForm()) return;
+                      YoyakuButton(
+                        text: 'Add Item',
+                        onPressed: () {
+                          if (!validateForm()) return;
 
-                              dataSync.addItem(
-                                type: _type,
-                                title: _title,
-                                dateBought: _dateBought,
-                                releaseDate: _releaseDate,
-                                currency: _currency,
-                                price: _price,
-                                shipping: _shipping,
-                                image: _image!,
-                                link: _link,
-                                paid: _paid,
-                                delivered: _delivered,
-                                canceled: _canceled,
-                                import: _import,
-                              );
+                          dataSync.addItem(
+                            type: _type,
+                            title: _title,
+                            dateBought: _dateBought,
+                            releaseDate: _releaseDate,
+                            currency: _currency,
+                            price: _price,
+                            shipping: _shipping,
+                            image: _image!,
+                            link: _link,
+                            paid: _paid,
+                            delivered: _delivered,
+                            canceled: _canceled,
+                            import: _import,
+                          );
 
-                              Navigator.pop(context);
-                            },
-                            child: const Text(
-                              'Add item',
-                              style: TextStyle(
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                        ),
+                          Navigator.pop(context);
+                        },
                       )
                     ],
                   ),

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,6 +14,7 @@ class ItemPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log('Opened ${data.uuid}', name: 'itemPage');
     var size = MediaQuery.of(context).size;
 
     Color tagColor = Colors.green;
