@@ -71,6 +71,8 @@ class _ItemViewState extends State<ItemView> {
     var size = MediaQuery.of(context).size;
 
     return RefreshIndicator(
+      backgroundColor: const Color(0xFF03071e),
+      color: Colors.orange,
       onRefresh: () async {
         setState(() {});
       },

@@ -1,6 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:yoyaku/classes/yoyaku_tab.dart';
 import 'package:yoyaku/components/extras/custom_speed_dial_child.dart';
+import 'package:yoyaku/components/tabs/all_tab.dart';
 import 'package:yoyaku/components/tabs/calendar_tab.dart';
+import 'package:yoyaku/components/tabs/canceled_items_tab.dart';
 import 'package:yoyaku/components/tabs/category_tab.dart';
 import 'package:yoyaku/components/tabs/collection_tab.dart';
 import 'package:yoyaku/components/tabs/datatable_tab.dart';
@@ -9,14 +14,10 @@ import 'package:yoyaku/components/tabs/items_tab.dart';
 import 'package:yoyaku/components/tabs/montly_tab.dart';
 import 'package:yoyaku/components/tabs/total_tab.dart';
 import 'package:yoyaku/components/tabs/upcomming_items_tab.dart';
-import 'package:yoyaku/components/tabs/all_tab.dart';
-import 'package:yoyaku/components/tabs/canceled_items_tab.dart';
 import 'package:yoyaku/components/tabs/upcomming_payments.dart';
 import 'package:yoyaku/pages/calculator_page.dart';
 import 'package:yoyaku/pages/settings_page.dart';
 import 'package:yoyaku/pages/util_page.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -26,19 +27,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<List<Widget>> tabs = const [
-    [Tab(icon: Icon(Icons.list_alt)), AllTab()],
-    [Tab(icon: Icon(Icons.calendar_today_rounded)), CalendarTab()],
-    [Tab(icon: Icon(Icons.local_shipping)), UpcommingTab()],
-    [Tab(icon: Icon(Icons.payment)), UpcommingPaymentTab()],
-    [Tab(icon: Icon(Icons.image_outlined)), GalleryTab()],
-    [Tab(icon: Icon(Icons.calendar_month)), MontlyTab()],
-    [Tab(icon: Icon(Icons.collections_bookmark)), CollectionTab()],
-    [Tab(icon: Icon(Icons.category)), CategoryTab()],
-    [Tab(icon: Icon(Icons.receipt_long)), TotalTab()],
-    [Tab(icon: Icon(Icons.cancel_outlined)), CanceledTab()],
-    [Tab(icon: Icon(Icons.select_all)), ItemsTab()],
-    [Tab(icon: Icon(Icons.data_object_rounded)), DatatableTab()],
+  List<YoyakuTab> tabs = [
+    YoyakuTab(Icons.list_alt, const AllTab()),
+    YoyakuTab(Icons.calendar_today_rounded, const CalendarTab()),
+    YoyakuTab(Icons.local_shipping, const UpcommingTab()),
+    YoyakuTab(Icons.payment, const UpcommingPaymentTab()),
+    YoyakuTab(Icons.image_outlined, const GalleryTab()),
+    YoyakuTab(Icons.calendar_month, const MontlyTab()),
+    YoyakuTab(Icons.collections_bookmark, const CollectionTab()),
+    YoyakuTab(Icons.category, const CategoryTab()),
+    YoyakuTab(Icons.receipt_long, const TotalTab()),
+    YoyakuTab(Icons.cancel_outlined, const CanceledTab()),
+    YoyakuTab(Icons.select_all, const ItemsTab()),
+    YoyakuTab(Icons.data_object_rounded, const DatatableTab()),
   ];
 
   @override
@@ -60,11 +61,11 @@ class _HomePageState extends State<HomePage> {
             indicatorWeight: 3,
             labelColor: Colors.red,
             unselectedLabelColor: Colors.grey.shade300,
-            tabs: tabs.map((e) => e[0]).toList(),
+            tabs: tabs.map((e) => e.getHeader).toList(),
           ),
         ),
         body: TabBarView(
-          children: tabs.map((e) => e[1]).toList(),
+          children: tabs.map((e) => e.getTab).toList(),
         ),
         floatingActionButton: SpeedDial(
           buttonSize: const Size(65, 65),

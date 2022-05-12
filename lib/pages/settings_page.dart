@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:yoyaku/classes/data_sync.dart';
 import 'package:yoyaku/components/extras/confirm_dialog.dar.dart';
+import 'package:yoyaku/services/yoyaku_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -15,6 +16,12 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  bool allTab = false;
+
+  void getValues() async {
+    allTab = await getPreference(YoyakuPreferenceType.allTab);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

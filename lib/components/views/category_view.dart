@@ -1,9 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:yoyaku/components/extras/icon_toggle.dart';
 import 'package:yoyaku/components/form_fields/custom_dropdown_form_field.dart';
 import 'package:yoyaku/components/views/grid_view.dart';
 import 'package:yoyaku/components/views/list_view.dart';
 import 'package:yoyaku/models/database_model.dart';
-import 'package:flutter/material.dart';
 
 enum ViewType {
   list,
@@ -69,70 +69,77 @@ class _CategoryViewState extends State<CategoryView> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Row(
-            children: [
-              Visibility(
-                visible: widget.title != '',
-                child: Text(
-                  widget.title,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: size.width * 0.04,
+    return RefreshIndicator(
+      backgroundColor: const Color(0xFF03071e),
+      color: Colors.orange,
+      onRefresh: () async {
+        setState(() {});
+      },
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
+              children: [
+                Visibility(
+                  visible: widget.title != '',
+                  child: Text(
+                    widget.title,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: size.width * 0.04,
+                    ),
                   ),
                 ),
-              ),
-              const Spacer(),
-              Row(
-                children: [
-                  IconToggle(
-                    value: isList,
-                    onPressed: (bool newValue) => setState(
-                      () {
-                        isList = newValue;
-                        type = isList ? ViewType.list : ViewType.grid;
-                      },
-                    ),
-                    trueIcon: Icons.apps,
-                    falseIcon: Icons.list,
-                  )
-                ],
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CustomDropDownField(
-                  items: [
-                    CustomDropdownValue(value: 'Figure', name: 'Figure'),
-                    CustomDropdownValue(value: 'Manga', name: 'Manga'),
-                    CustomDropdownValue(value: 'Game', name: 'Game'),
-                    CustomDropdownValue(value: 'Other', name: 'Other'),
+                const Spacer(),
+                Row(
+                  children: [
+                    IconToggle(
+                      value: isList,
+                      onPressed: (bool newValue) => setState(
+                        () {
+                          isList = newValue;
+                          type = isList ? ViewType.list : ViewType.grid;
+                        },
+                      ),
+                      trueIcon: Icons.apps,
+                      falseIcon: Icons.list,
+                    )
                   ],
-                  onChanged: (value) {
-                    setState(() {
-                      category = value!;
-                    });
-                  },
-                  title: 'Type',
-                  initalValue: 'Figure',
                 ),
-              ),
-              Expanded(
-                child: getViewType(category),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+          Expanded(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CustomDropDownField(
+                    items: [
+                      CustomDropdownValue(value: 'Figure', name: 'Figure'),
+                      CustomDropdownValue(value: 'Manga', name: 'Manga'),
+                      CustomDropdownValue(value: 'Game', name: 'Game'),
+                      CustomDropdownValue(value: 'Other', name: 'Other'),
+                    ],
+                    onChanged: (value) {
+                      setState(() {
+                        category = value!;
+                      });
+                    },
+                    title: 'Type',
+                    initalValue: 'Figure',
+                  ),
+                ),
+                Expanded(
+                  child: getViewType(category),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
