@@ -95,7 +95,6 @@ class _AmiAmiAddPageState extends State<AmiAmiAddPage> {
   @override
   Widget build(BuildContext context) {
     final dataSync = Provider.of<DataSync>(context);
-    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       backgroundColor: const Color(0xFF03071e),
