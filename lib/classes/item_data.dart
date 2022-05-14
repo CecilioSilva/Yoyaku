@@ -113,10 +113,8 @@ class ItemData {
     try {
       return price / exchangeRates[currency];
     } catch (e) {
-      log(e.toString());
+      return price;
     }
-
-    return price;
   }
 
   String getTotalPrice(

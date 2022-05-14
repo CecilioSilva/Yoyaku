@@ -26,6 +26,8 @@ Future<Map> getExchange() async {
     },
   );
 
+  rates['EUR'] = 1.0;
+
   return rates;
 }
 
@@ -61,4 +63,5 @@ Map initalRates = {
   'SGD': 1.4602,
   'THB': 36.331,
   'ZAR': 16.8406,
+  'EUR': 1.0,
 };

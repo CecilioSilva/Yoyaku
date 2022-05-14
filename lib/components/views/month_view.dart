@@ -95,42 +95,45 @@ class _ItemMonthViewState extends State<ItemMonthView> {
               onRefresh: () async {
                 setState(() {});
               },
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 8.0,
-                      top: 10,
-                      right: 8,
-                    ),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Monthly',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                            fontSize: size.width * 0.04,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    child: ExpansionPanelList(
-                      dividerColor: Colors.orange,
-                      elevation: 0,
-                      children: getExpansionPanels(
-                        keyList,
-                        snapshot.data!.values.toList(),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 8.0,
+                        top: 10,
+                        right: 8,
                       ),
-                      expansionCallback: (i, isOpen) => setState(() {
-                        _isOpen[i] = !isOpen;
-                      }),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Monthly',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: size.width * 0.04,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                      child: ExpansionPanelList(
+                        dividerColor: Colors.orange,
+                        elevation: 0,
+                        animationDuration: const Duration(milliseconds: 800),
+                        children: getExpansionPanels(
+                          keyList,
+                          snapshot.data!.values.toList(),
+                        ),
+                        expansionCallback: (i, isOpen) => setState(() {
+                          _isOpen[i] = !isOpen;
+                        }),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           } else {

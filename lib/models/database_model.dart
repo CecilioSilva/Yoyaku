@@ -42,7 +42,8 @@ class YoyakuDatabase extends _$YoyakuDatabase {
         ..orderBy([
           (u) => OrderingTerm(expression: u.releaseDate, mode: OrderingMode.asc)
         ])
-        ..where((tbl) => tbl.canceled.not()))
+        ..where((tbl) => tbl.canceled.not())
+        ..where((tbl) => tbl.delivered.not()))
       .get();
 
   Future<List<Item>> get allCanceledItems =>
