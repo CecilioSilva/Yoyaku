@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:yoyaku/classes/item_data.dart';
+import 'package:yoyaku/components/extras/item_cost_reciept.dart';
 import 'package:yoyaku/services/get_card_gradient.dart';
 
 class ItemPage extends StatelessWidget {
@@ -64,6 +65,36 @@ class ItemPage extends StatelessWidget {
                     width: size.width,
                   ),
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: tagColor,
+                    borderRadius: BorderRadius.circular(
+                      10,
+                    ),
+                  ),
+                  height: 60,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          data.type,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: size.width * 0.1,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
                 SizedBox(
                   height: 35,
                   child: Row(
@@ -95,58 +126,11 @@ class ItemPage extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                SizedBox(
-                  height: 60,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: getCardGradient(data.canceled),
-                      borderRadius: BorderRadius.circular(
-                        10,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            data.totalPrice,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: size.width * 0.1,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: tagColor,
-                    borderRadius: BorderRadius.circular(
-                      10,
-                    ),
-                  ),
-                  height: 60,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          data.type,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: size.width * 0.1,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                ItemCostReceipt(
+                  itemPrice: data.priceOrg,
+                  shippingPrice: data.shippingOrg,
+                  currency: data.currencyRaw,
+                  import: data.import,
                 ),
                 const SizedBox(
                   height: 10,
@@ -155,8 +139,8 @@ class ItemPage extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   child: SizedBox(
                     height: 110,
+                    width: size.width * 0.95,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(4.0),
@@ -165,7 +149,7 @@ class ItemPage extends StatelessWidget {
                               const Text(
                                 'Date Bought',
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 20,
                                   color: Colors.orangeAccent,
                                 ),
                               ),
@@ -194,6 +178,7 @@ class ItemPage extends StatelessWidget {
                             ],
                           ),
                         ),
+                        const Spacer(),
                         Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: Column(
@@ -201,7 +186,7 @@ class ItemPage extends StatelessWidget {
                               const Text(
                                 'Release Date',
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 20,
                                   color: Colors.orangeAccent,
                                 ),
                               ),

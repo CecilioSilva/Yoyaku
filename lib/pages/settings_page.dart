@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:yoyaku/classes/data_sync.dart';
@@ -96,6 +97,16 @@ class _SettingsPageState extends State<SettingsPage> {
               },
               color: Colors.red,
               text: 'Clear Data',
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.0),
+              child: Divider(
+                color: Colors.orangeAccent,
+              ),
+            ),
+            Text(
+              'Yoyaku Ver 1.5 © Cecilio Silva Monteiro',
+              style: GoogleFonts.inconsolata(color: Colors.red),
             ),
           ],
         ),

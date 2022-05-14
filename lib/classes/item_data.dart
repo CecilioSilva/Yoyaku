@@ -6,9 +6,6 @@ import 'package:drift/drift.dart';
 import 'package:intl/intl.dart';
 
 class ItemData {
-  static double importPercentage = 4.7;
-  static double handlingFee = 12;
-
   late int id;
   late String uuid;
   late String type;
@@ -33,6 +30,10 @@ class ItemData {
   late double shippingRaw;
   late double priceRaw;
   late double vatRaw;
+
+  late String currencyRaw;
+  late double shippingOrg;
+  late double priceOrg;
 
   ItemData(Item data, rates) {
     id = data.id;
@@ -84,6 +85,9 @@ class ItemData {
       shippingRaw,
       data.import,
     );
+    currencyRaw = data.currency;
+    shippingOrg = data.shipping;
+    priceOrg = data.price;
   }
 
   String formatDate(DateTime date) {
@@ -125,15 +129,14 @@ class ItemData {
       return '≈ €${totalPriceInEuro.toStringAsFixed(2)}';
     }
 
-    double vat = totalPriceInEuro / 100 * 21;
-    if (priceInEuro < 150) {
-      double total = totalPriceInEuro + vat + handlingFee;
-      return '≈ €${total.toStringAsFixed(2)}';
-    } else {
-      double importCost = totalPriceInEuro / 100 * importPercentage;
-      double total = totalPriceInEuro + vat + importCost + handlingFee;
-      return '≈ €${total.toStringAsFixed(2)}';
-    }
+    bool isExpansive = totalPriceInEuro > 150;
+
+    double vat = totalPriceInEuro * 0.21;
+    double handlingFee = isExpansive ? 10 : 4;
+    double importCost = isExpansive ? totalPriceInEuro * 0.047 : 0;
+
+    double total = totalPriceInEuro + vat + handlingFee + importCost;
+    return '≈ €${total.toStringAsFixed(2)}';
   }
 
   double getRawTotal(
@@ -149,28 +152,26 @@ class ItemData {
     if (!import) {
       return totalPriceInEuro;
     }
+    bool isExpansive = totalPriceInEuro > 150;
 
-    double vat = totalPriceInEuro / 100 * 21;
-    if (priceInEuro < 150) {
-      double total = totalPriceInEuro + vat + handlingFee;
-      return total;
-    } else {
-      double importCost = totalPriceInEuro / 100 * importPercentage;
-      double total = totalPriceInEuro + vat + importCost + handlingFee;
-      return total;
-    }
+    double vat = totalPriceInEuro * 0.21;
+    double handlingFee = isExpansive ? 10 : 4;
+    double importCost = isExpansive ? totalPriceInEuro * 0.047 : 0;
+
+    double total = totalPriceInEuro + vat + handlingFee + importCost;
+
+    return total;
   }
 
   double getVat(double price, double shipping, bool import) {
     if (!import) return 0;
     var totalPriceInEuro = price + shipping;
 
-    double vat = totalPriceInEuro / 100 * 21;
-    if (price < 150) {
-      return vat + handlingFee;
-    } else {
-      double importCost = totalPriceInEuro / 100 * importPercentage;
-      return vat + importCost + handlingFee;
-    }
+    double vat = totalPriceInEuro * 0.21;
+    bool isExpansive = totalPriceInEuro > 150;
+    double importCost = isExpansive ? totalPriceInEuro * 0.047 : 0;
+    double handlingFee = isExpansive ? 10 : 4;
+
+    return vat + importCost + handlingFee;
   }
 }

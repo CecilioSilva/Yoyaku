@@ -17,6 +17,59 @@ class ItemMonthView extends StatefulWidget {
 }
 
 class _ItemMonthViewState extends State<ItemMonthView> {
+  final List<bool> _isOpen = [];
+
+  List<ExpansionPanel> getExpansionPanels(List keyList, dynamic data) {
+    List<ExpansionPanel> panels = [];
+    for (var i = 0; i < keyList.length; i++) {
+      _isOpen.add(true);
+      var itemList = data[i];
+      panels.add(
+        ExpansionPanel(
+          canTapOnHeader: true,
+          backgroundColor: const Color(0xFF03071e),
+          headerBuilder: ((context, isExpanded) => Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text(
+                      keyList[i],
+                      style: TextStyle(
+                        color: isExpanded ? Colors.orange : Colors.red,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 20,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                ],
+              )),
+          body: GridView.builder(
+            shrinkWrap: true,
+            physics: const ClampingScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 8,
+              childAspectRatio: 0.75,
+            ),
+            itemCount: itemList.length,
+            itemBuilder: (context, itemIndex) {
+              final rates = context.watch<Map?>();
+              Item item = itemList[itemIndex];
+              ItemData data = ItemData(item, rates);
+              return ItemGridMinimalCard(data);
+            },
+          ),
+          isExpanded: _isOpen[i],
+        ),
+      );
+    }
+
+    return panels;
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -63,56 +116,18 @@ class _ItemMonthViewState extends State<ItemMonthView> {
                       ],
                     ),
                   ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: keyList.length,
-                      itemBuilder: (context, keyIndex) {
-                        List itemList =
-                            snapshot.data!.values.toList()[keyIndex];
-
-                        return Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      keyList[keyIndex],
-                                      style: const TextStyle(
-                                        color: Colors.orange,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 20,
-                                        decoration: TextDecoration.underline,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              GridView.builder(
-                                shrinkWrap: true,
-                                physics: const ClampingScrollPhysics(),
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 8,
-                                  crossAxisSpacing: 8,
-                                  childAspectRatio: 0.75,
-                                ),
-                                itemCount: itemList.length,
-                                itemBuilder: (context, itemIndex) {
-                                  final rates = context.watch<Map?>();
-                                  Item item = itemList[itemIndex];
-                                  ItemData data = ItemData(item, rates);
-                                  return ItemGridMinimalCard(data);
-                                },
-                              ),
-                            ],
-                          ),
-                        );
-                      },
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    child: ExpansionPanelList(
+                      dividerColor: Colors.orange,
+                      elevation: 0,
+                      children: getExpansionPanels(
+                        keyList,
+                        snapshot.data!.values.toList(),
+                      ),
+                      expansionCallback: (i, isOpen) => setState(() {
+                        _isOpen[i] = !isOpen;
+                      }),
                     ),
                   ),
                 ],

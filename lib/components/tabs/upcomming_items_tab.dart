@@ -10,7 +10,7 @@ class UpcommingTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return ItemView(
       itemFuture: Provider.of<DataSync>(context).getUpcommingItems(),
-      title: 'Upcomming Items',
+      title: 'Upcoming Items',
     );
   }
 }

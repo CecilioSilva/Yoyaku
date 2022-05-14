@@ -4,6 +4,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
 import 'package:yoyaku/classes/yoyaku_tab.dart';
 import 'package:yoyaku/components/extras/custom_speed_dial_child.dart';
+import 'package:yoyaku/components/extras/navigation_drawer.dart';
 import 'package:yoyaku/components/tabs/all_tab.dart';
 import 'package:yoyaku/components/tabs/calendar_tab.dart';
 import 'package:yoyaku/components/tabs/canceled_items_tab.dart';
@@ -27,7 +28,8 @@ import '../services/notification_api.dart';
 import 'item_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final int initalIndex;
+  const HomePage({Key? key, this.initalIndex = 0}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -35,18 +37,66 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<YoyakuTab> tabs = [
-    YoyakuTab(Icons.list_alt, const AllTab()),
-    YoyakuTab(Icons.calendar_today_rounded, const CalendarTab()),
-    YoyakuTab(Icons.local_shipping, const UpcommingTab()),
-    YoyakuTab(Icons.payment, const UpcommingPaymentTab()),
-    YoyakuTab(Icons.image_outlined, const GalleryTab()),
-    YoyakuTab(Icons.calendar_month, const MontlyTab()),
-    YoyakuTab(Icons.collections_bookmark, const CollectionTab()),
-    YoyakuTab(Icons.category, const CategoryTab()),
-    YoyakuTab(Icons.receipt_long, const TotalTab()),
-    YoyakuTab(Icons.cancel_outlined, const CanceledTab()),
-    YoyakuTab(Icons.select_all, const ItemsTab()),
-    YoyakuTab(Icons.data_object_rounded, const DatatableTab()),
+    YoyakuTab(
+      Icons.list_alt,
+      const AllTab(),
+      'All Active Items',
+    ),
+    YoyakuTab(
+      Icons.calendar_today_rounded,
+      const CalendarTab(),
+      'Calendar',
+    ),
+    YoyakuTab(
+      Icons.local_shipping,
+      const UpcommingTab(),
+      'Upcoming Items',
+    ),
+    YoyakuTab(
+      Icons.payment,
+      const UpcommingPaymentTab(),
+      'Upcoming Payments',
+    ),
+    YoyakuTab(
+      Icons.image_outlined,
+      const GalleryTab(),
+      'Item Gallery',
+    ),
+    YoyakuTab(
+      Icons.calendar_month,
+      const MontlyTab(),
+      'Montly Items',
+    ),
+    YoyakuTab(
+      Icons.collections_bookmark,
+      const CollectionTab(),
+      'Current Collection',
+    ),
+    YoyakuTab(
+      Icons.category,
+      const CategoryTab(),
+      'Item Categories',
+    ),
+    YoyakuTab(
+      Icons.receipt_long,
+      const TotalTab(),
+      'Total statistics',
+    ),
+    YoyakuTab(
+      Icons.cancel_outlined,
+      const CanceledTab(),
+      'Canceled Items',
+    ),
+    YoyakuTab(
+      Icons.select_all,
+      const ItemsTab(),
+      'All Items',
+    ),
+    YoyakuTab(
+      Icons.data_object_rounded,
+      const DatatableTab(),
+      'Item Datatable',
+    ),
   ];
 
   @override
@@ -78,6 +128,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
+      initialIndex: widget.initalIndex,
       length: tabs.length,
       child: Scaffold(
         backgroundColor: const Color(0xFF03071e),
@@ -96,6 +147,9 @@ class _HomePageState extends State<HomePage> {
             unselectedLabelColor: Colors.grey.shade300,
             tabs: tabs.map((e) => e.getHeader).toList(),
           ),
+        ),
+        drawer: NavigationDrawerWidget(
+          items: tabs,
         ),
         body: TabBarView(
           children: tabs.map((e) => e.getTab).toList(),
