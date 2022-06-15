@@ -17,6 +17,7 @@ class ItemData {
   late String shipping;
   late Uint8List image;
   late String link;
+  late String orderId;
   late bool paid;
   late bool delivered;
   late bool canceled;
@@ -88,6 +89,7 @@ class ItemData {
     currencyRaw = data.currency;
     shippingOrg = data.shipping;
     priceOrg = data.price;
+    orderId = data.orderId;
   }
 
   String formatDate(DateTime date) {

@@ -14,6 +14,7 @@ import 'package:yoyaku/components/tabs/datatable_tab.dart';
 import 'package:yoyaku/components/tabs/gallery_tab.dart';
 import 'package:yoyaku/components/tabs/items_tab.dart';
 import 'package:yoyaku/components/tabs/montly_tab.dart';
+import 'package:yoyaku/components/tabs/order_tab.dart';
 import 'package:yoyaku/components/tabs/total_tab.dart';
 import 'package:yoyaku/components/tabs/upcomming_items_tab.dart';
 import 'package:yoyaku/components/tabs/upcomming_payments.dart';
@@ -76,6 +77,11 @@ class _HomePageState extends State<HomePage> {
       Icons.category,
       const CategoryTab(),
       'Item Categories',
+    ),
+    YoyakuTab(
+      Icons.shopping_cart,
+      const OrderTab(),
+      'Orders',
     ),
     YoyakuTab(
       Icons.receipt_long,

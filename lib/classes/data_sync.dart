@@ -46,6 +46,25 @@ class DataSync extends ChangeNotifier {
 
   Map? get getExchangeRate => exchangeRates;
 
+  Future<Map<String, List<Item>>> getOrders() async {
+    List<Item> allItems = await _localDatabase.allMontlyItems;
+    Map<String, List<Item>> result = {};
+
+    for (Item item in allItems) {
+      final String itemOrderId = item.orderId;
+
+      if (itemOrderId != "") {
+        if (result.containsKey(itemOrderId)) {
+          result[itemOrderId]!.add(item);
+        } else {
+          result[itemOrderId] = [item];
+        }
+      }
+    }
+
+    return result;
+  }
+
   Stream<List<Item>> dataStream() {
     return _localDatabase.watchEntries();
   }
@@ -180,6 +199,7 @@ class DataSync extends ChangeNotifier {
     required double shipping,
     required Uint8List image,
     required String link,
+    required String orderId,
     required bool paid,
     required bool delivered,
     required bool canceled,
@@ -204,6 +224,7 @@ class DataSync extends ChangeNotifier {
         canceled: Value(canceled),
         import: Value(import),
         uuid: Value(uuid),
+        orderId: Value(orderId),
       ),
     );
 
@@ -264,6 +285,7 @@ class DataSync extends ChangeNotifier {
       row.add(currentItem.import); //11
       row.add(currentItem.paid); //12
       row.add(currentItem.canceled); //13
+      row.add(currentItem.orderId); //14
       rows.add(row);
     }
 
@@ -362,6 +384,13 @@ class DataSync extends ChangeNotifier {
         if (!currentUuids.contains(row[1])) {
           File image = File('$imagesPath/${row[1]}.jpg');
           Uint8List imageBytes = await image.readAsBytes();
+          String newOrderId = "";
+
+          try {
+            newOrderId = row[14];
+          } catch (e) {
+            newOrderId = "";
+          }
 
           addItem(
             type: row[2],
@@ -378,6 +407,7 @@ class DataSync extends ChangeNotifier {
             canceled: row[13] == 'true',
             import: row[11] == 'true',
             uuid: row[1],
+            orderId: newOrderId,
           );
         } else {
           log('item already exists -> ${row[3]}', name: 'ImportDatabase');

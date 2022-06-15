@@ -23,6 +23,7 @@ class Item extends DataClass implements Insertable<Item> {
   final bool import;
   final bool paid;
   final bool canceled;
+  final String orderId;
   Item(
       {required this.id,
       required this.uuid,
@@ -38,7 +39,8 @@ class Item extends DataClass implements Insertable<Item> {
       required this.delivered,
       required this.import,
       required this.paid,
-      required this.canceled});
+      required this.canceled,
+      required this.orderId});
   factory Item.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return Item(
@@ -72,6 +74,8 @@ class Item extends DataClass implements Insertable<Item> {
           .mapFromDatabaseResponse(data['${effectivePrefix}paid'])!,
       canceled: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}canceled'])!,
+      orderId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}order_id'])!,
     );
   }
   @override
@@ -92,6 +96,7 @@ class Item extends DataClass implements Insertable<Item> {
     map['import'] = Variable<bool>(import);
     map['paid'] = Variable<bool>(paid);
     map['canceled'] = Variable<bool>(canceled);
+    map['order_id'] = Variable<String>(orderId);
     return map;
   }
 
@@ -112,6 +117,7 @@ class Item extends DataClass implements Insertable<Item> {
       import: Value(import),
       paid: Value(paid),
       canceled: Value(canceled),
+      orderId: Value(orderId),
     );
   }
 
@@ -134,6 +140,7 @@ class Item extends DataClass implements Insertable<Item> {
       import: serializer.fromJson<bool>(json['import']),
       paid: serializer.fromJson<bool>(json['paid']),
       canceled: serializer.fromJson<bool>(json['canceled']),
+      orderId: serializer.fromJson<String>(json['orderId']),
     );
   }
   @override
@@ -155,6 +162,7 @@ class Item extends DataClass implements Insertable<Item> {
       'import': serializer.toJson<bool>(import),
       'paid': serializer.toJson<bool>(paid),
       'canceled': serializer.toJson<bool>(canceled),
+      'orderId': serializer.toJson<String>(orderId),
     };
   }
 
@@ -173,7 +181,8 @@ class Item extends DataClass implements Insertable<Item> {
           bool? delivered,
           bool? import,
           bool? paid,
-          bool? canceled}) =>
+          bool? canceled,
+          String? orderId}) =>
       Item(
         id: id ?? this.id,
         uuid: uuid ?? this.uuid,
@@ -190,6 +199,7 @@ class Item extends DataClass implements Insertable<Item> {
         import: import ?? this.import,
         paid: paid ?? this.paid,
         canceled: canceled ?? this.canceled,
+        orderId: orderId ?? this.orderId,
       );
   @override
   String toString() {
@@ -208,7 +218,8 @@ class Item extends DataClass implements Insertable<Item> {
           ..write('delivered: $delivered, ')
           ..write('import: $import, ')
           ..write('paid: $paid, ')
-          ..write('canceled: $canceled')
+          ..write('canceled: $canceled, ')
+          ..write('orderId: $orderId')
           ..write(')'))
         .toString();
   }
@@ -229,7 +240,8 @@ class Item extends DataClass implements Insertable<Item> {
       delivered,
       import,
       paid,
-      canceled);
+      canceled,
+      orderId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -248,7 +260,8 @@ class Item extends DataClass implements Insertable<Item> {
           other.delivered == this.delivered &&
           other.import == this.import &&
           other.paid == this.paid &&
-          other.canceled == this.canceled);
+          other.canceled == this.canceled &&
+          other.orderId == this.orderId);
 }
 
 class ItemsCompanion extends UpdateCompanion<Item> {
@@ -267,6 +280,7 @@ class ItemsCompanion extends UpdateCompanion<Item> {
   final Value<bool> import;
   final Value<bool> paid;
   final Value<bool> canceled;
+  final Value<String> orderId;
   const ItemsCompanion({
     this.id = const Value.absent(),
     this.uuid = const Value.absent(),
@@ -283,6 +297,7 @@ class ItemsCompanion extends UpdateCompanion<Item> {
     this.import = const Value.absent(),
     this.paid = const Value.absent(),
     this.canceled = const Value.absent(),
+    this.orderId = const Value.absent(),
   });
   ItemsCompanion.insert({
     this.id = const Value.absent(),
@@ -300,6 +315,7 @@ class ItemsCompanion extends UpdateCompanion<Item> {
     required bool import,
     required bool paid,
     required bool canceled,
+    required String orderId,
   })  : uuid = Value(uuid),
         type = Value(type),
         title = Value(title),
@@ -313,7 +329,8 @@ class ItemsCompanion extends UpdateCompanion<Item> {
         delivered = Value(delivered),
         import = Value(import),
         paid = Value(paid),
-        canceled = Value(canceled);
+        canceled = Value(canceled),
+        orderId = Value(orderId);
   static Insertable<Item> custom({
     Expression<int>? id,
     Expression<String>? uuid,
@@ -330,6 +347,7 @@ class ItemsCompanion extends UpdateCompanion<Item> {
     Expression<bool>? import,
     Expression<bool>? paid,
     Expression<bool>? canceled,
+    Expression<String>? orderId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -347,6 +365,7 @@ class ItemsCompanion extends UpdateCompanion<Item> {
       if (import != null) 'import': import,
       if (paid != null) 'paid': paid,
       if (canceled != null) 'canceled': canceled,
+      if (orderId != null) 'order_id': orderId,
     });
   }
 
@@ -365,7 +384,8 @@ class ItemsCompanion extends UpdateCompanion<Item> {
       Value<bool>? delivered,
       Value<bool>? import,
       Value<bool>? paid,
-      Value<bool>? canceled}) {
+      Value<bool>? canceled,
+      Value<String>? orderId}) {
     return ItemsCompanion(
       id: id ?? this.id,
       uuid: uuid ?? this.uuid,
@@ -382,6 +402,7 @@ class ItemsCompanion extends UpdateCompanion<Item> {
       import: import ?? this.import,
       paid: paid ?? this.paid,
       canceled: canceled ?? this.canceled,
+      orderId: orderId ?? this.orderId,
     );
   }
 
@@ -433,6 +454,9 @@ class ItemsCompanion extends UpdateCompanion<Item> {
     if (canceled.present) {
       map['canceled'] = Variable<bool>(canceled.value);
     }
+    if (orderId.present) {
+      map['order_id'] = Variable<String>(orderId.value);
+    }
     return map;
   }
 
@@ -453,7 +477,8 @@ class ItemsCompanion extends UpdateCompanion<Item> {
           ..write('delivered: $delivered, ')
           ..write('import: $import, ')
           ..write('paid: $paid, ')
-          ..write('canceled: $canceled')
+          ..write('canceled: $canceled, ')
+          ..write('orderId: $orderId')
           ..write(')'))
         .toString();
   }
@@ -550,6 +575,11 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
       type: const BoolType(),
       requiredDuringInsert: true,
       defaultConstraints: 'CHECK (canceled IN (0, 1))');
+  final VerificationMeta _orderIdMeta = const VerificationMeta('orderId');
+  @override
+  late final GeneratedColumn<String?> orderId = GeneratedColumn<String?>(
+      'order_id', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -566,7 +596,8 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
         delivered,
         import,
         paid,
-        canceled
+        canceled,
+        orderId
       ];
   @override
   String get aliasedName => _alias ?? 'items';
@@ -667,6 +698,12 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
           canceled.isAcceptableOrUnknown(data['canceled']!, _canceledMeta));
     } else if (isInserting) {
       context.missing(_canceledMeta);
+    }
+    if (data.containsKey('order_id')) {
+      context.handle(_orderIdMeta,
+          orderId.isAcceptableOrUnknown(data['order_id']!, _orderIdMeta));
+    } else if (isInserting) {
+      context.missing(_orderIdMeta);
     }
     return context;
   }

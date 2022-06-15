@@ -29,6 +29,7 @@ class _AddTabState extends State<AddTab> {
   double _shipping = 0;
   Uint8List? _image;
   String _link = '';
+  String _orderId = '';
   bool _delivered = false;
   bool _paid = false;
   bool _canceled = false;
@@ -160,6 +161,13 @@ class _AddTabState extends State<AddTab> {
                       },
                       initialValue: _link,
                     ),
+                    CustomTextFormField(
+                      title: 'Order id',
+                      onChanged: (value) {
+                        _orderId = value;
+                      },
+                      initialValue: _orderId,
+                    ),
                     CustomCheckboxFormField(
                       title: 'Delivered',
                       onChanged: (value) {
@@ -220,6 +228,7 @@ class _AddTabState extends State<AddTab> {
                               delivered: _delivered,
                               canceled: _canceled,
                               import: _import,
+                              orderId: _orderId,
                             );
 
                             Navigator.pop(context);

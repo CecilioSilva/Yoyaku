@@ -39,6 +39,7 @@ class _UpdatePageState extends State<UpdatePage> {
   double _shipping = 0;
   Uint8List? _image;
   String _link = '';
+  String _orderId = '';
   bool _delivered = false;
   bool _paid = false;
   bool _canceled = false;
@@ -59,6 +60,7 @@ class _UpdatePageState extends State<UpdatePage> {
     _shipping = widget.item.shipping;
     _image = widget.item.image;
     _link = widget.item.link;
+    _orderId = widget.item.orderId;
     _delivered = widget.item.delivered;
     _paid = widget.item.paid;
     _canceled = widget.item.canceled;
@@ -230,6 +232,13 @@ class _UpdatePageState extends State<UpdatePage> {
                         },
                         initialValue: _link,
                       ),
+                      CustomTextFormField(
+                        title: 'Order Number',
+                        onChanged: (value) {
+                          _orderId = value;
+                        },
+                        initialValue: _orderId,
+                      ),
                       CustomCheckboxFormField(
                         title: 'Delivered',
                         onChanged: (value) {
@@ -293,6 +302,7 @@ class _UpdatePageState extends State<UpdatePage> {
                                   import: _import,
                                   paid: _paid,
                                   canceled: _canceled,
+                                  orderId: _orderId,
                                 ),
                               );
 

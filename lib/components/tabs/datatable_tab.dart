@@ -73,6 +73,7 @@ class _DatatableTabState extends State<DatatableTab> {
                         DataColumn(label: Text('Canceled')),
                         DataColumn(label: Text('Import')),
                         DataColumn(label: Text('Link')),
+                        DataColumn(label: Text('Order Id')),
                         DataColumn(
                           label: Text('Days since Bought'),
                           numeric: true,
@@ -218,6 +219,7 @@ class _DatatableTabState extends State<DatatableTab> {
                 ),
               ),
             ),
+            DataCell(Text(data.orderId)),
             DataCell(Text(data.daysSinceBought)),
             DataCell(Text(data.price)),
             DataCell(Text(data.shipping)),

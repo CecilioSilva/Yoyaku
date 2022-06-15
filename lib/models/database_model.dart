@@ -23,6 +23,7 @@ class Items extends Table {
   BoolColumn get import => boolean()();
   BoolColumn get paid => boolean()();
   BoolColumn get canceled => boolean()();
+  TextColumn get orderId => text()();
 }
 
 @DriftDatabase(tables: [Items])
