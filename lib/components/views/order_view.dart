@@ -6,6 +6,7 @@ import 'package:yoyaku/components/extras/custom_button.dar.dart';
 import 'package:yoyaku/components/extras/custom_error.dart';
 import 'package:yoyaku/components/extras/loading.dart';
 import 'package:yoyaku/components/extras/non_found.dart';
+import 'package:yoyaku/components/tabs/order_total_screen.dart';
 import 'package:yoyaku/models/database_model.dart';
 
 class OrderView extends StatefulWidget {
@@ -28,10 +29,12 @@ class _OrderViewState extends State<OrderView> {
       _isOpen.add(true);
       List<Item> itemList = data[i];
       double totalCost = 0;
+      String orderId = "";
 
       for (var i = 0; i < itemList.length; i++) {
         Item element = itemList[i];
         totalCost += ItemData(element, rates).priceRaw;
+        orderId = element.orderId;
       }
 
       panels.add(
@@ -79,7 +82,16 @@ class _OrderViewState extends State<OrderView> {
               ),
               YoyakuButton(
                 text: "Open Order",
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: ((context) => OrderTotalScreen(
+                            items: itemList,
+                            orderId: orderId,
+                          )),
+                    ),
+                  );
+                },
                 color: Colors.pink,
               ),
             ],
