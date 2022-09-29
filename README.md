@@ -1,16 +1,31 @@
-# yoyaku
+# Yoyaku
 
-A new Flutter project.
+Yoyaku is an app to sort and make your preorders more clear.
 
-## Getting Started
+![Overview](https://i.imgur.com/Zk7urrv.jpg)
 
-This project is a starting point for a Flutter application.
+    
+## Features
 
-A few resources to get you started if this is your first Flutter project:
+- Easy to use
+- Fast
+- Ofline mode
+- Backups
+- Notifications
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+#### Requirements
+ - Android 11 and up
+## License
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+[Mozilla Public License 2.0](https://choosealicense.com/licenses/mpl-2.0/)
+
+  
+## Contributing
+
+Contributions are always welcome!
+
+
+  
+## Feedback
+
+If you have any feedback, please reach out to us at cjsilvamon@gmail.com
